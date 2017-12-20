@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Lunar Lander - Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel='stylesheet' type="text/css" href='css/css_Login.css'>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="js/js_Login.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="panel panel-login">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <a href="#" class="active" id="login-form-link">Log in</a>
+                                </div>
+                                <div class="col-xs-6">
+                                    <a href="#" id="register-form-link">Sign in</a>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div id="login-form" role="form" style="display: block;">
+                                        <div class="form-group">
+                                            <input type="text" name="username" id="usernameLog" tabindex="1" class="form-control" placeholder="Username" value="" maxlength="30" pattern=".{4,}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" name="password" id="passwordLog" tabindex="2" class="form-control" placeholder="Password" value="" maxlength="30" pattern=".{4,}" required>
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
+                                            <label for="remember"> Remember Me</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6 col-sm-offset-3">
+                                                    <button name="login-submit" onclick="login()" id="login-submit" tabindex="4" class="form-control btn btn-login">Log in</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="register-form"   role="form" data-toggle="validator" style="display:none;">
+                                        <div class="form-group">
+                                            <input type="text" name="name" id="name" tabindex="1" class="form-control" placeholder="Player's name" value="" maxlength="50" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="username" id="username" tabindex="2" class="form-control" placeholder="Username" value="" maxlength="30" pattern=".{4,}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" name="password" id="password" tabindex="3" class="form-control" placeholder="Password" value="" maxlength="30" pattern=".{4,}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" name="passwordRepeated" id="passwordRepeated" tabindex="4" class="form-control" placeholder="Repeat Password" value="" pattern=".{4,}" maxlength="30" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="email" id="email" tabindex="5" class="form-control" placeholder="Email" value="" maxlength="50" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6 col-sm-offset-3">
+                                                    <button name="register-submit" onclick="registro()" id="register-submit" tabindex="6" class="form-control btn btn-register">Sign in</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
