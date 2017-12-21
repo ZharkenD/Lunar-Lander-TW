@@ -34,12 +34,12 @@ and open the template in the editor.
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <div id="login-form" role="form" style="display: block;">
+                                    <form id="login-form" role="form" onsubmit="return prueba()" style="display: block;">
                                         <div class="form-group">
-                                            <input type="text" name="username" id="usernameLog" tabindex="1" class="form-control" placeholder="Username" value="" maxlength="30" pattern=".{4,}" required>
+                                            <input type="text" name="username" id="usernameLog" tabindex="1" class="form-control" placeholder="Username" value="" maxlength="30" pattern=".{4,}" title="Minimum 4 characters" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" name="password" id="passwordLog" tabindex="2" class="form-control" placeholder="Password" value="" maxlength="30" pattern=".{4,}" required>
+                                            <input type="password" name="password" id="passwordLog" tabindex="2" class="form-control" placeholder="Password" value="" maxlength="30" pattern=".{4,}" title="Minimum 4 characters" required>
                                         </div>
                                         <div class="form-group text-center">
                                             <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
@@ -48,23 +48,23 @@ and open the template in the editor.
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-sm-6 col-sm-offset-3">
-                                                    <button name="login-submit" onclick="login()" id="login-submit" tabindex="4" class="form-control btn btn-login">Log in</button>
+                                                    <input type="submit" value="Log in" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login"/>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
                                     <div id="register-form"   role="form" data-toggle="validator" style="display:none;">
                                         <div class="form-group">
                                             <input type="text" name="name" id="name" tabindex="1" class="form-control" placeholder="Player's name" value="" maxlength="50" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" name="username" id="username" tabindex="2" class="form-control" placeholder="Username" value="" maxlength="30" pattern=".{4,}" required>
+                                            <input type="text" name="username" id="username" tabindex="2" class="form-control" placeholder="Username" value="" maxlength="30" pattern=".{4,}" title="Minimum 4 characters" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" name="password" id="password" tabindex="3" class="form-control" placeholder="Password" value="" maxlength="30" pattern=".{4,}" required>
+                                            <input type="password" name="password" id="password" tabindex="3" class="form-control" placeholder="Password" value="" maxlength="30" pattern=".{4,}" title="Minimum 4 characters" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" name="passwordRepeated" id="passwordRepeated" tabindex="4" class="form-control" placeholder="Repeat Password" value="" pattern=".{4,}" maxlength="30" required>
+                                            <input type="password" name="passwordRepeated" id="passwordRepeated" tabindex="4" class="form-control" placeholder="Repeat Password" value="" pattern=".{4,}" title="Minimum 4 characters" maxlength="30" required>
                                         </div>
                                         <div class="form-group">
                                             <input type="text" name="email" id="email" tabindex="5" class="form-control" placeholder="Email" value="" maxlength="50" required>
