@@ -4,12 +4,7 @@
 ////    });
 //};
 
-function prueba(){
-    console.log("OK");
-    var username = $("#usernameLog").val();
-    alert(username);
-    return false;
-}
+
 
 function login() {
 
@@ -18,6 +13,8 @@ function login() {
     var username = $("#usernameLog").val();
     var password = $("#passwordLog").val();
     alert(username);
+    
+    return false;
 /*
     if (validar(username) || validar(password)) {
         alert("Ningún campo puede estar vacio");
@@ -54,38 +51,37 @@ function registro() {
     var name = $("#name").val();
     var username = $("#username").val();
     var password = $("#password").val();
-    if (validar(name) || validar(username) || validar(password)) {
-        alert("Ningún campo puede estar vacio");
-    } else {
-
-        $.ajax({
-            method: "POST",
-            url: url,
-            data: {namePost: name, usernamePost: username, passwordPost: password},
-            success: function (u) {
-                alert(u["mess"]);
-                location.reload();
-            },
-            error: function (e) {
-                if (e["responseJSON"] === undefined)
-                    alert(mensaje);
-                else
-                    alert(e["responseJSON"]["error"]);
-            }
-        });
-    }
+    
+    return false;
+//    if (validar(name) || validar(username) || validar(password)) {
+//        alert("Ningún campo puede estar vacio");
+//    } else {
+//
+//        $.ajax({
+//            method: "POST",
+//            url: url,
+//            data: {namePost: name, usernamePost: username, passwordPost: password},
+//            success: function (u) {
+//                alert(u["mess"]);
+//                location.reload();
+//            },
+//            error: function (e) {
+//                if (e["responseJSON"] === undefined)
+//                    alert(mensaje);
+//                else
+//                    alert(e["responseJSON"]["error"]);
+//            }
+//        });
+//    }
 }
 
-function validar(texto) {
-    if (texto.length === 0 || texto === null) {
-        return true;
-    } else {
-        return false;
-    }
-
-}
-
-
+/*function validatePassword(){
+  if(password.value != confirm_password.value) {
+    confirm_password.setCustomValidity("Passwords Don't Match");
+  } else {
+    confirm_password.setCustomValidity('');
+  }
+}*/
 
 //Funciones de cambiar login / register
 $(function () {
