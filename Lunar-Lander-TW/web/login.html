@@ -13,6 +13,9 @@ and open the template in the editor.
         <link rel='stylesheet' type="text/css" href='css/css_Login.css'>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/hmac.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/sha1.js"></script>
         <script src="js/js_Login.js"></script>
     </head>
     <body>
@@ -42,7 +45,7 @@ and open the template in the editor.
                                             <input type="password" name="password" id="passwordLog" tabindex="2" class="form-control" placeholder="Password" value="" maxlength="20" pattern=".{4,}" title="Minimum 4 characters" required>
                                         </div>
                                         <div class="form-group text-center">
-                                            <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
+                                            <input type="checkbox" tabindex="3" class="" value="" name="rememberLog" id="rememberLog">
                                             <label for="remember"> Remember Me</label>
                                         </div>
                                         <div class="form-group">
@@ -53,21 +56,21 @@ and open the template in the editor.
                                             </div>
                                         </div>
                                     </form>
-                                    <form id="register-form"   role="form" data-toggle="validator" onsubmit="return registro()" style="display:none;">
+                                    <form id="register-form"   role="form" data-toggle="validator" onsubmit="return register()" style="display:none;">
                                         <div class="form-group">
-                                            <input type="text" name="name" id="name" tabindex="1" class="form-control" placeholder="Player's name" value="" maxlength="50" required>
+                                            <input type="text" name="name" id="nameReg" tabindex="1" class="form-control" placeholder="Player's name" value="" maxlength="50" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" name="username" id="username" tabindex="2" class="form-control" placeholder="Username" value="" maxlength="30" pattern=".{4,}" title="Minimum 4 characters" required>
+                                            <input type="text" name="username" id="usernameReg" tabindex="2" class="form-control" placeholder="Username" value="" maxlength="30" pattern=".{4,}" title="Minimum 4 characters" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" name="password" id="password" tabindex="3" class="form-control" placeholder="Password" value="" maxlength="20" pattern=".{4,}" title="Minimum 4 characters" required>
+                                            <input type="password" name="password" id="passwordReg" tabindex="3" class="form-control" placeholder="Password" value="" maxlength="20" pattern=".{4,}" title="Minimum 4 characters" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" name="passwordRepeated" id="passwordRepeated" tabindex="4" class="form-control" placeholder="Repeat Password" value="" pattern=".{4,}" title="Minimum 4 characters" maxlength="20" required>
+                                            <input type="password" name="passwordRepeated" id="passwordRepeatedReg" tabindex="4" class="form-control" placeholder="Repeat Password" value="" pattern=".{4,}" title="Minimum 4 characters" maxlength="20" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" name="email" id="email" tabindex="5" class="form-control" placeholder="Email" value="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Enter a vaild email" maxlength="50" required>
+                                            <input type="text" name="email" id="emailReg" tabindex="5" class="form-control" placeholder="Email" value="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Enter a vaild email" maxlength="50" required>
                                         </div>
                                         <div class="form-group">
                                             <div class="row">

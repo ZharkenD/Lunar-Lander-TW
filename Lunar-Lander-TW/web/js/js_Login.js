@@ -1,8 +1,11 @@
-//window.onload = function () {
-////    $("#login-submit").click(function(){
-////        console.log("hi");
-////    });
-//};
+window.onload = function () {
+    $("#passwordReg").change(function () {
+        validatePassword();
+    });
+    $("#passwordRepeatedReg").keyup(function () {
+        validatePassword();
+    });
+};
 
 
 
@@ -12,46 +15,50 @@ function login() {
     var mensaje = "Error desconocido";
     var username = $("#usernameLog").val();
     var password = $("#passwordLog").val();
-    alert(username);
-    
-    return false;
-/*
-    if (validar(username) || validar(password)) {
-        alert("Ningún campo puede estar vacio");
-    } else {
-
-        $.ajax({
-            method: "POST",
-            url: url,
-            data: {usernamePost: username, passwordPost: password},
-            success: function (u) {
-                if (u["mess"] === ("El usuario no existe, intenta registrarte primero.")) {
-                    alert(u["mess"]);
-                    
-                };
-                location.reload();
-            },
-            error: function (e) {
-                if (e["responseJSON"] === undefined)
-                    alert(mensaje);
-                else
-                    alert(e["responseJSON"]["error"]);
+    var remember = $("#rememberLog").prop('checked');
+    var hash = CryptoJS.SHA1(password + "lunar" + username);
+    var pwdCrypt = CryptoJS.enc.Hex.stringify(hash);
+    alert(pwdCrypt);
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: {username: username, password: pwdCrypt, remember: remember},
+        success: function (u) {
+            if (u["mess"] === ("El usuario no existe, intenta registrarte primero.")) {
+                alert(u["mess"]);
             }
-        });
-    }
-    ;*/
+            location.reload();
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                alert(mensaje);
+            else
+                alert(e["responseJSON"]["error"]);
+        }
+    });
+
+    return false;
+
 }
-;
 
 
-function registro() {
+function register() {
 
     var url = "Register";
     var mensaje = "Error desconocido";
-    var name = $("#name").val();
-    var username = $("#username").val();
-    var password = $("#password").val();
-    
+    var name = $("#nameReg").val();
+    var username = $("#usernameReg").val();
+    var password = $("#passwordReg").val();
+
+    var email = $("#emailReg").val();
+
+    //  alert(name+" "+username+" "+password+" "+password2);
+
+    if (validatePassword()) {
+        alert("OK");
+    }
+
+
     return false;
 //    if (validar(name) || validar(username) || validar(password)) {
 //        alert("Ningún campo puede estar vacio");
@@ -75,13 +82,19 @@ function registro() {
 //    }
 }
 
-/*function validatePassword(){
-  if(password.value != confirm_password.value) {
-    confirm_password.setCustomValidity("Passwords Don't Match");
-  } else {
-    confirm_password.setCustomValidity('');
-  }
-}*/
+function validatePassword() {
+    if ($("#passwordReg").val() !== $("#passwordRepeatedReg").val()) {
+        $("#passwordRepeatedReg").each(function () {
+            this.setCustomValidity("errorMessage");
+        });
+        return false;
+    } else {
+        $("#passwordRepeatedReg").each(function () {
+            this.setCustomValidity("");
+        });
+        return true;
+    }
+}
 
 //Funciones de cambiar login / register
 $(function () {
