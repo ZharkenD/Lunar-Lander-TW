@@ -9,6 +9,9 @@ window.onload = function () {
     $("#passwordRepeatedReg").keyup(function () {
         validatePassword();
     });
+    $("#okModal").click(function(){
+        $("#alertModal").modal('hide');
+    });
 };
 
 /**
@@ -32,15 +35,15 @@ function login() {
         data: {username: username, password: pwdCrypt, remember: remember},
         success: function (u) {
             if (u["mess"] === ("The user doesn't exists.\nPlease register before log in.")) {
-                alert(u["mess"]);
+                showAlert(u["mess"]);
             }
             location.reload();
         },
         error: function (e) {
             if (e["responseJSON"] === undefined)
-                alert(mensaje);
+                showAlert(mensaje);
             else
-                alert(e["responseJSON"]["error"]);
+                showAlert(e["responseJSON"]["error"]);
         }
     });
 
@@ -75,18 +78,23 @@ function register() {
                 }else if(u["mess"] === "The email is already in use."){
                     $("#emailReg").focus();
                 }
-                alert(u["mess"]);
+                showAlert(u["mess"]);
             },
             error: function (e) {
                 if (e["responseJSON"] === undefined)
-                    alert(mensaje);
+                    showAlert(mensaje);
                 else
-                    alert(e["responseJSON"]["error"]);
+                    showAlert(e["responseJSON"]["error"]);
             }
         });       
     }
 
     return false;
+}
+
+function showAlert(text){
+    $("#pModal").text(text);
+    $("#alertModal").modal({backdrop: "static", keyboard: "false"});
 }
 
 /**
