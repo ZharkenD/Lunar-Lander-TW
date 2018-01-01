@@ -1,3 +1,7 @@
+/**
+ * Window onload method
+ * @returns {undefined}
+ */
 window.onload = function () {
     $("#passwordReg").change(function () {
         validatePassword();
@@ -7,24 +11,27 @@ window.onload = function () {
     });
 };
 
-
-
+/**
+ * Login when you press onsubmit on login.
+ * @returns {Boolean}
+ */
 function login() {
 
     var url = "Login";
-    var mensaje = "Error desconocido";
+    var mensaje = "Unknown error";
+    
     var username = $("#usernameLog").val();
     var password = $("#passwordLog").val();
     var remember = $("#rememberLog").prop('checked');
     var hash = CryptoJS.SHA1(password + "lunar" + username);
     var pwdCrypt = CryptoJS.enc.Hex.stringify(hash);
-    alert(pwdCrypt);
+
     $.ajax({
         method: "POST",
         url: url,
         data: {username: username, password: pwdCrypt, remember: remember},
         success: function (u) {
-            if (u["mess"] === ("El usuario no existe, intenta registrarte primero.")) {
+            if (u["mess"] === ("The user doesn't exists.\nPlease register before log in.")) {
                 alert(u["mess"]);
             }
             location.reload();
@@ -41,51 +48,55 @@ function login() {
 
 }
 
-
+/**
+ * Register when you press onsubmit on register.
+ * @returns {Boolean}
+ */
 function register() {
 
     var url = "Register";
-    var mensaje = "Error desconocido";
+    var mensaje = "Unknown error";
+    
     var name = $("#nameReg").val();
     var username = $("#usernameReg").val();
     var password = $("#passwordReg").val();
-
     var email = $("#emailReg").val();
-
-    //  alert(name+" "+username+" "+password+" "+password2);
+    var hash = CryptoJS.SHA1(password + "lunar" + username);
+    var pwdCrypt = CryptoJS.enc.Hex.stringify(hash);
 
     if (validatePassword()) {
-        alert("OK");
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {name: name, username: username, password: pwdCrypt, email:email},
+            success: function (u) {
+                if(u["mess"] === "The username is already in use."){
+                    $("#usernameReg").focus();
+                }else if(u["mess"] === "The email is already in use."){
+                    $("#emailReg").focus();
+                }
+                alert(u["mess"]);
+            },
+            error: function (e) {
+                if (e["responseJSON"] === undefined)
+                    alert(mensaje);
+                else
+                    alert(e["responseJSON"]["error"]);
+            }
+        });       
     }
 
-
     return false;
-//    if (validar(name) || validar(username) || validar(password)) {
-//        alert("Ningún campo puede estar vacio");
-//    } else {
-//
-//        $.ajax({
-//            method: "POST",
-//            url: url,
-//            data: {namePost: name, usernamePost: username, passwordPost: password},
-//            success: function (u) {
-//                alert(u["mess"]);
-//                location.reload();
-//            },
-//            error: function (e) {
-//                if (e["responseJSON"] === undefined)
-//                    alert(mensaje);
-//                else
-//                    alert(e["responseJSON"]["error"]);
-//            }
-//        });
-//    }
 }
 
+/**
+ * Check that the two password fields match in register.
+ * @returns {Boolean}
+ */
 function validatePassword() {
     if ($("#passwordReg").val() !== $("#passwordRepeatedReg").val()) {
         $("#passwordRepeatedReg").each(function () {
-            this.setCustomValidity("errorMessage");
+            this.setCustomValidity("Passowords don't match");
         });
         return false;
     } else {
@@ -96,7 +107,10 @@ function validatePassword() {
     }
 }
 
-//Funciones de cambiar login / register
+/**
+ * Change between tab Login and Sing in.
+ * @returns {undefined}
+ */
 $(function () {
 
     $('#login-form-link').click(function (e) {
