@@ -75,8 +75,12 @@ function register() {
             success: function (u) {
                 if(u["mess"] === "The username is already in use."){
                     $("#usernameReg").focus();
-                }else if(u["mess"] === "The email is already in use."){
+                }
+                if(u["mess"] === "The email is already in use."){
                     $("#emailReg").focus();
+                }
+                if(u["mess"] === "User created correctly."){
+                    cleanRegister();
                 }
                 showAlert(u["mess"]);
             },
@@ -92,6 +96,11 @@ function register() {
     return false;
 }
 
+/**
+ * Show a personal alert with css
+ * @param {type} text
+ * @returns {undefined}
+ */
 function showAlert(text){
     $("#pModal").text(text);
     $("#alertModal").modal({backdrop: "static", keyboard: "false"});
@@ -116,6 +125,28 @@ function validatePassword() {
 }
 
 /**
+ * Clean all the fields in the login form
+ * @returns {undefined}
+ */
+function cleanLogin(){
+    $("#usernameLog").val("");
+    $("#passwordLog").val("");
+    $("#rememberLog").prop('checked', false);
+}
+
+/**
+ * Clean all the fields in the register form
+ * @returns {undefined}
+ */
+function cleanRegister(){
+    $("#nameReg").val("");
+    $("#usernameReg").val("");
+    $("#passwordReg").val("");
+    $("#passwordRepeatedReg").val("");
+    $("#emailReg").val("");
+}
+
+/**
  * Change between tab Login and Sing in.
  * @returns {undefined}
  */
@@ -127,6 +158,9 @@ $(function () {
         $('#register-form-link').removeClass('active');
         $(this).addClass('active');
         e.preventDefault();
+        cleanLogin();
+        cleanRegister();
+        
     });
 
     $('#register-form-link').click(function (e) {
@@ -135,6 +169,10 @@ $(function () {
         $('#login-form-link').removeClass('active');
         $(this).addClass('active');
         e.preventDefault();
+        cleanLogin();
+        cleanRegister();
+        
+        
     });
 
 });
