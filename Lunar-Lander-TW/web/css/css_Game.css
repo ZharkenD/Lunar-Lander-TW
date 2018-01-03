@@ -48,7 +48,7 @@ body,html{
 
 .d{background-color:pink;height:7%;width:100%;position:fixed;bottom:0px;}
 
-#nave{text-align:center;position:fixed;top:23%;width:100%;height:20%;z-index:1;background-color: red}
+#nave{text-align:center;position:fixed;top:23%;width:100%;height:20%;z-index:1;}
 #naveimg{height:100%}
 #earth{
     display: block;
@@ -58,6 +58,7 @@ body,html{
 
 .panel-modal{
     display:none;
+    z-index: 2048;
 }
 
 .panel-default {
@@ -80,8 +81,27 @@ body,html{
     border-color: #787878;
 }
 
-.btn-return {
+.btn-panel{
     background: linear-gradient(dodgerblue, deepskyblue);
+	outline: none;
+	color: #fff;
+	font-size: 14px;
+	height: auto;
+	font-weight: bold;
+	padding: 14px 0;
+	text-transform: uppercase;
+	border-color: #59B2E6;
+        width: 100%;
+        max-width: 300px;
+}
+
+.btn-panel:hover,.btn-panel:focus{
+    color: #fff;
+background: linear-gradient(#0080ff, #0099cc);
+}
+
+.btn-return {
+    background: linear-gradient(red,darkred);
     outline: none;
     color: #fff;
     font-size: 14px;
@@ -89,14 +109,14 @@ body,html{
     font-weight: bold;
     padding: 14px 0;
     text-transform: uppercase;
-    border-color: #59B2E6;
+    border-color: salmon;
     width:100%;
     max-width: 250px;
 }
 .btn-return:hover,
 .btn-return:focus {
     color: #fff;
-    background: linear-gradient(#0080ff, #0099cc);
+    background: linear-gradient(#990000, #660000);
 }
 
 /*CSS desktop*/
