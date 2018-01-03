@@ -48,7 +48,7 @@ public class Login extends HttpServlet {
                     response.setContentType("application/json");
                     PrintWriter pw = response.getWriter();
                     pw.println(gson.toJson(emess));
-                    //If the "Remember me" option is checked, the cookie will last longer.
+                    //If the "Remember me" option is checked, the cookie will last longer
                 } else {
                     Map<String, String> emess = new HashMap<>();
                     emess.put("error", "The password is not correct.");

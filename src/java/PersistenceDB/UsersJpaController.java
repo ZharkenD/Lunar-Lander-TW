@@ -198,7 +198,7 @@ public class UsersJpaController implements Serializable {
      * Check if the email exists.
      *
      * @param email
-     * @return If you find an email, return true does not return false.
+     * @return If you find an email, return true does not return false
      */
     public Boolean checkEmail(String email) {
         EntityManager em = getEntityManager();
@@ -215,7 +215,7 @@ public class UsersJpaController implements Serializable {
      *  Check if the username exists
      *
      * @param username
-     * @return If you find an username, return it does not return null.
+     * @return If you find an username, return it does not return null
      */
     public Users findUser(String username) {
         EntityManager em = getEntityManager();
