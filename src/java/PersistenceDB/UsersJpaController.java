@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 
 public class UsersJpaController implements Serializable {
 
@@ -176,5 +177,38 @@ public class UsersJpaController implements Serializable {
             em.close();
         }
     }
-    
+
+    /**
+     * Check if the username exits.
+     *
+     * @param username
+     * @return If you find a username, return true does not return false.
+     */
+    public Boolean checkUsername(String username) {
+        EntityManager em = getEntityManager();
+        try {
+            List<Users> list = em.createNamedQuery("Users.findByUsername").setParameter("username", username).getResultList();
+            return !list.isEmpty();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Check if the email exists.
+     *
+     * @param email
+     * @return If you find an email, return true does not return false.
+     */
+    public Boolean checkEmail(String email) {
+        EntityManager em = getEntityManager();
+        try {
+            List<Users> list = em.createNamedQuery("Users.findByEmail").setParameter("email", email).getResultList();
+            return !list.isEmpty();
+
+        } finally {
+            em.close();
+        }
+    }
+
 }
