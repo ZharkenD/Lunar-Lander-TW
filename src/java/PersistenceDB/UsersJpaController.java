@@ -182,7 +182,7 @@ public class UsersJpaController implements Serializable {
      * Check if the username exits.
      *
      * @param username
-     * @return If you find a username, return true does not return false.
+     * @return If you find an username, return true does not return false.
      */
     public Boolean checkUsername(String username) {
         EntityManager em = getEntityManager();
@@ -206,6 +206,23 @@ public class UsersJpaController implements Serializable {
             List<Users> list = em.createNamedQuery("Users.findByEmail").setParameter("email", email).getResultList();
             return !list.isEmpty();
 
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     *  Check if the username exists
+     *
+     * @param username
+     * @return If you find an username, return it does not return null.
+     */
+    public Users findUser(String username) {
+        EntityManager em = getEntityManager();
+        try {
+            return (Users) em.createNamedQuery("Users.findByUsername").setParameter("username", username).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }
