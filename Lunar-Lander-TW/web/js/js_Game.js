@@ -26,10 +26,11 @@ var isPause = false;//----------------------------------------------------------
 var endGame = false;
 var pauseVisible = false;
 var instructionsVisible = false;
-var optionsVisible = true;
+var optionsVisible = false;//-----------------------------------------------------------------
 var configVisible = false;
 var rankingVisible = false;
 var aboutVisible = false;
+var mobilePause = false;
 
 //Configuration
 var shipImg = "nave";
@@ -80,6 +81,75 @@ $(document).ready(function () {
             hideAll();
             $("#pausePanel").show();
             pauseVisible = true;
+        }
+    });
+
+    $("#instructionNav").click(function () {
+        if (instructionsVisible) {
+            start();
+            $("#instrctionPanel").hide();
+            instructionsVisible = false;
+
+        } else {
+            stop();
+            hideAll();
+            $("#instructionPanel").show();
+            instructionsVisible = true;
+        }
+    });
+
+    $("#optionNav").click(function () {
+        alert(optionsVisible);
+        if (optionsVisible) {
+            start();
+            $("#optionPanel").hide();
+            optionsVisible = false;
+
+        } else {
+            stop();
+            hideAll();
+            $("#optionPanel").show();
+            optionsVisible = true;
+        }
+    });
+
+    $("#rankingNav").click(function () {
+        if (rankingVisible) {
+            start();
+            $("#rankingPanel").hide();
+            rankingVisible = false;
+
+        } else {
+            stop();
+            hideAll();
+            $("#rankingPanel").show();
+            rankingVisible = true;
+        }
+    });
+
+    $("#aboutNav").click(function () {
+        if (aboutVisible) {
+            start();
+            $("#aboutPanel").hide();
+            aboutVisible = false;
+
+        } else {
+            stop();
+            hideAll();
+            $("#aboutPanel").show();
+            aboutVisible = true;
+        }
+    });
+    
+    $("#mobilePause").click(function () {
+        if (mobilePause) {
+            start();
+            mobilePause = false;
+
+        } else {
+            stop();
+            hideAll();
+            mobilePause = true;
         }
     });
 
@@ -189,4 +259,10 @@ function hideAll() {
     $("#configurationPanel").hide();
     $("#rankingPanel").hide();
     $("#aboutPanel").hide();
+    pauseVisible = false;
+    instructionsVisible = false;
+    optionsVisible = false;
+    configVisible = false;
+    rankingVisible = false;
+    aboutVisible = false;
 }

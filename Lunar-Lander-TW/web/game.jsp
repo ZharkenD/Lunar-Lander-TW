@@ -22,21 +22,21 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <button type="button" class="navbar-toggle" id="mobilePause" data-toggle="collapse" data-target="#myNavbar">
                         <span class="glyphicon glyphicon-cog"></span>
                     </button>
                     <a class="navbar-brand">Lunar  <span class="glyphicon glyphicon-star"></span> Lander</a>
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav">
-                        <li><a><span class="glyphicon glyphicon-play"></span> Play</a></li>
-                        <li><a><span class="glyphicon glyphicon-align-left"></span> Instructions</a></li>
-                        <li><a><span class="glyphicon glyphicon-wrench"></span> Options</a></li> 
-                        <li><a><span class="glyphicon glyphicon-stats"></span> Ranking</a></li> 
+                        <li><a id="playNav"><span class="glyphicon glyphicon-play"></span> Play</a></li>
+                        <li><a id="instructionNav"><span class="glyphicon glyphicon-align-left"></span> Instructions</a></li>
+                        <li><a id="optionNav"><span class="glyphicon glyphicon-wrench"></span> Options</a></li> 
+                        <li><a id="rankingNav"><span class="glyphicon glyphicon-stats"></span> Ranking</a></li> 
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
-                        <li><a><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                        <li><a id="aboutNav"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+                        <li><a id="logoutNav"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
                     </ul>
                 </div>
             </div>
@@ -64,31 +64,39 @@
         </div>
         <div class="d">d</div>
 
-        <div class="panel panel-default panel-modal">
+        <div class="panel panel-default panel-modal" id="pausePanel">
             <div class="panel-heading">PAUSE</div>
-            <div class="panel-body">Panel Content</div>
-            <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
+            <div class="panel-body"><div class="btn-group-vertical">
+                    <button type="button" class="btn btn-panel">Resume</button>
+                    <button type="button" class="btn btn-panel">Restart</button>
+                </div></div>
         </div>
-        
-        <div class="panel panel-default panel-modal">
+
+        <div class="panel panel-default panel-modal" id="instructionPanel">
             <div class="panel-heading">INSTRUCTIONS</div>
             <div class="panel-body">Panel Content</div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
         </div>
-        
-        <div class="panel panel-default panel-modal">
+
+        <div class="panel panel-default panel-modal" id="optionPanel">
             <div class="panel-heading">OPTIONS</div>
             <div class="panel-body">Panel Content</div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
         </div>
         
-        <div class="panel panel-default panel-modal">
+        <div class="panel panel-default panel-modal" id="configurationPanel">
+            <div class="panel-heading">CONFIGURATION</div>
+            <div class="panel-body">Panel Content</div>
+            <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
+        </div>
+
+        <div class="panel panel-default panel-modal" id="rankingPanel">
             <div class="panel-heading">RANKING</div>
             <div class="panel-body">Panel Content</div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
         </div>
-        
-        <div class="panel panel-default panel-modal">
+
+        <div class="panel panel-default panel-modal" id="aboutPanel">
             <div class="panel-heading">ABOUT</div>
             <div class="panel-body">Panel Content</div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
