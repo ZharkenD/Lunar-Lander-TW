@@ -1,5 +1,6 @@
 package Servlets;
 
+import Model.Hash;
 import PersistenceDB.Users;
 import PersistenceDB.UsersJpaController;
 import com.google.gson.Gson;
@@ -62,7 +63,7 @@ public class Login extends HttpServlet {
                 PrintWriter pw = response.getWriter();
                 pw.println(gson.toJson(emess));
             } else {
-                if (user.getPassword().equals(request.getParameter("password"))) {
+                if (user.getPassword().equals(Hash.sha1(request.getParameter("password")))) {
                     Map<String, String> emess = new HashMap<>();
                     emess.put("mess", "Succesful");
                     Gson gson = new GsonBuilder().create();
@@ -70,11 +71,12 @@ public class Login extends HttpServlet {
                     PrintWriter pw = response.getWriter();
                     pw.println(gson.toJson(emess));
                     if (request.getParameter("remember").equals("true")) {
-                        response.addCookie(createCookie("lunaruser", request.getParameter("username"), 86400));
-                        response.addCookie(createCookie("landerpass", request.getParameter("password"), 86400));//One day
+                        response.addCookie(createCookie("lunar", Hash.sha1(request.getParameter("username")), 86400));
+                        response.addCookie(createCookie("lander", Hash.sha1(request.getParameter("password")), 86400));//One day
+                    } else {
+                        response.addCookie(createCookie("lunar", Hash.sha1(request.getParameter("username")), 30));
+                        response.addCookie(createCookie("lander", Hash.sha1(request.getParameter("password")), 30));
                     }
-                    response.addCookie(createCookie("lunaruser", request.getParameter("username"), 30));
-                    response.addCookie(createCookie("landerpass", request.getParameter("password"), 30));
                 } else {
                     Map<String, String> emess = new HashMap<>();
                     emess.put("error", "The password is not correct.");
@@ -99,8 +101,8 @@ public class Login extends HttpServlet {
     }
 
     private boolean checkCookie(HttpServletRequest request) {
-        String cookieUsername = "lunaruser";
-        String cookiePassword = "landerpass";
+        String cookieUsername = "lunar";
+        String cookiePassword = "lander";
         String username = null;
         String password = null;
         Cookie[] cookies = request.getCookies();

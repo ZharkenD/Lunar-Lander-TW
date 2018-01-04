@@ -1,5 +1,6 @@
 package Servlets;
 
+import Model.Hash;
 import PersistenceDB.Users;
 import PersistenceDB.UsersJpaController;
 import com.google.gson.Gson;
@@ -37,9 +38,7 @@ public class Register extends HttpServlet {
                     Users user = new Users();
                     user.setNameReal(request.getParameter("name"));
                     user.setUsername(request.getParameter("username"));
-                    //Still missing encryption.
-                    user.setPassword(request.getParameter("password"));
-                    //
+                    user.setPassword(Hash.sha1(request.getParameter("password")));
                     user.setEmail(request.getParameter("email"));
                     ujc.create(user);
                     Map<String, String> mess = new HashMap<>();
