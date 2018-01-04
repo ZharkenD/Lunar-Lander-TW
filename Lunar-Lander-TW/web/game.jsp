@@ -106,9 +106,9 @@
                 <button type="button" class="btn btn-panel" id="chooseOption">Choose this configuration</button>
                 <br>
                 <div class="btn-group-vertical">
-                    <button type="button" class="btn btn-panel">New configuration</button>
-                    <button type="button" class="btn btn-panel">Modifiy selected configuration</button>
-                    <button type="button" class="btn btn-panel">Delete selected configuration</button>
+                    <button type="button" class="btn btn-panel" id="newConfigOption">New configuration</button>
+                    <button type="button" class="btn btn-panel" id="modifyConfigOption">Modifiy selected configuration</button>
+                    <button type="button" class="btn btn-panel" id="deleteConfigOption">Delete selected configuration</button>
                 </div>
             </div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
@@ -116,8 +116,54 @@
 
         <div class="panel panel-default panel-modal" id="configurationPanel">
             <div class="panel-heading"><h2>CONFIGURATION</h2></div>
-            <div class="panel-body">Panel Content</div>
-            <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <input type="text" name="configName" id="configName" class="form-control" placeholder="Configuration Name" value="" maxlength="30" pattern=".{4,}" title="Minimum 4 characters" required>
+                </div>
+                <h3>Difficulty</h3>
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-panel btn-active" id="easyConfig">Easy</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-panel" id="mediumConfig">Medium</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-panel" id="hardConfig">Hard</button>
+                    </div>
+                </div>
+                <div class="well well-sm">
+                    <p id="infoLevel">.</p>
+                </div>
+                <h3>Spaceship</h3>
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-panel btn-active" id="standardConfig">Standard</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-panel" id="ufoConfig">UFO</button>
+                    </div>
+                </div>
+                <h3>Landing</h3>
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-panel btn-active" id="moonConfig">Moon</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-panel" id="marsConfig">Mars</button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" id="saveConfig">Save</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" id="cancelConfig">Cancel</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="panel panel-default panel-modal" id="rankingPanel">
@@ -137,6 +183,21 @@
                     <p> <span class="glyphicon glyphicon-copyright-mark"></span> All rights reserved  </p>
                 </div></div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
+        </div>
+
+        <div class="modal fade" id="alertModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">     
+                    <div class="modal-body text-center">
+                        <div id="parrafosAbout">
+                            <p id="pModal"></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="form-control btn" id="okModal">OK</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -71,12 +71,12 @@ body,html{
     border-color: #787878;
 }
 
-.panel-body{
+.panel-body,.modal-body{
     background-image: url(../img/background_metal.png);
     background-color: #595959;
 }
 
-.panel-footer{
+.panel-footer,.modal-footer{
     background: linear-gradient(#a3a3a3,#595959);
     border-color: #787878;
 }
@@ -98,7 +98,7 @@ body,html{
     background: linear-gradient(#0080ff, #0099cc);
 }
 
-.btn-return {
+.btn-return,#cancelConfig {
     background: linear-gradient(red,darkred);
     outline: none;
     color: #fff;
@@ -109,12 +109,15 @@ body,html{
     text-transform: uppercase;
     border-color: salmon;
     width:100%;
-    max-width: 250px;
+
 }
 .btn-return:hover,
-.btn-return:focus {
+.btn-return:focus,#cancelConfig:hover,#cancelConfig:focus {
     color: #fff;
     background: linear-gradient(#990000, #660000);
+}
+.btn-return{
+        max-width: 250px;
 }
 
 .well{
@@ -126,7 +129,7 @@ body,html{
     font-weight: bold;
 }
 
-.panel-heading>h2{
+.panel-heading>h2,h3{
     background:linear-gradient(#e600e6,#800080);
     font-weight: bold;
     text-align: center;
@@ -135,6 +138,19 @@ body,html{
     border-radius: 7px;
     margin:0;
     min-width: 200px; 
+    padding: 3px 0;
+}
+
+h3{
+    max-width: 300px;
+    margin:auto;
+    margin-bottom: 5px;
+    margin-top: 25px;
+}
+
+.btn-active,.btn-active:hover,.btn-active:focus{
+     background:linear-gradient(mediumblue,darkblue);
+     color:orangered;
 }
 
 #chooseOption{
@@ -160,6 +176,46 @@ body,html{
 }
 option{
     background-color: black;
+}
+
+#alertModal{
+    z-index: 3000;
+}
+
+#pModal{
+    color:deepskyblue;
+    font-size: 17px;
+    background-color: black;
+    padding: 1px 5px;
+    border: 1px solid #787878;
+    border-radius: 4px;
+}
+
+#pModal{
+    font-weight: bold;
+}
+
+.modal-content{
+    border-color: #787878;
+    border-radius: 4px;
+}
+
+#okModal,#saveConfig{
+    background: linear-gradient(limegreen,green);
+	outline: none;
+	color: #fff;
+	font-size: 14px;
+	height: auto;
+	font-weight: bold;
+	padding: 14px 0;
+	text-transform: uppercase;
+	border-color: mediumseagreen;
+}
+
+#okModal:hover,
+#okModal:focus,#saveConfig:hover,#saveConfig:focus {
+	color: #fff;
+	background: linear-gradient(#28a428, #004d00);
 }
 
 /*CSS desktop*/

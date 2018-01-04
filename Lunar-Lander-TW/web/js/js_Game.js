@@ -37,6 +37,7 @@ var mobileNav=false;
 var shipImg = "nave";
 var ahoraDif = "facil";
 var lugarAterrizaje = "luna";
+var isModifying=false;
 
 var indexConfig = 0;
 var arrayConfig = [];
@@ -117,10 +118,9 @@ $(document).ready(function () {
     $("#optionNav").click(function () {
         if (optionsVisible) {
             start();
-            $("#optionPanel").hide();
+            $("#instrctionPanel").hide();
             optionsVisible = false;
-
-        } else {
+        }else{
             stop();
             hideAll();
             $("#optionPanel").show();
@@ -173,6 +173,46 @@ $(document).ready(function () {
         $("#pausePanel").hide();
         pauseVisible = false;
     });
+ 
+    /*OPTIONS EVENTS*/
+    $("#chooseOption").click(function () {
+        cargarConfig();
+        restart();
+        motorOff();
+        hideAll();
+    });
+    
+    $("#newConfigOption").click(function () {
+        $("#optionPanel").hide();
+        $("#configurationPanel").modal({backdrop: "static", keyboard: "false"});      
+    });
+    
+    $("#modifyConfigOption").click(function () {
+        putDataConfig();
+        isModifying=true;
+        $("#optionPanel").hide();
+        $("#configurationPanel").modal({backdrop: "static", keyboard: "false"});      
+    });
+    
+    $("#deleteConfigOption").click(function () {
+        if(arrayConfig.length>1){
+            deleteConfig();  
+        }else{
+            showAlert("You can't delete this configuration because you need to have at least one saved configuration.");
+        }
+            
+    });
+    
+    /*CONFIGURATION EVENTS*/
+    $("#saveConfig").click(function () {
+        $("#configurationPanel").modal('hide');
+        $("#optionPanel").show();
+        
+    });
+    $("#cancelConfig").click(function () {
+        $("#configurationPanel").modal('hide');
+        $("#optionPanel").show();
+    });
     
     /*MOBILE EVENTS*/
     $("#mobileRestart").click(function () {
@@ -180,7 +220,6 @@ $(document).ready(function () {
     });
     
     $("#mobilePause").click(function () {
-
             if (mobilePause) {
             start();
             mobilePause = false;
@@ -192,10 +231,10 @@ $(document).ready(function () {
             mobilePause = true;
             $("#mobilePause").text("");
             $("#mobilePause").append("<span class=\"glyphicon glyphicon-play\"></span>");
-        }
-        
-        
+        }        
     });
+    
+    
     
     $("#mobileNav").click(function () {
         if (mobileNav) {
@@ -218,6 +257,10 @@ $(document).ready(function () {
 
     //Empezar a mover la nave justo después de cargar la página ---------------------------------------------------
     start();
+    $("#okModal").click(function(){
+        $("#alertModal").modal('hide');
+    });
+
 });
 
 /*GAME*/
@@ -351,4 +394,22 @@ function restartConfig() {
     combustible.css("color", "lime");
     combustible.text(fuel.toFixed());
     document.getElementById("naveimg").src = "img/" + shipImg + ".png";
+}
+
+/*OPTIONS*/
+function cargarConfig() {
+    var indexAux = $("#selOptions option:selected").index();
+    seleccionarDif(arrayConfig[indexAux][1]);
+    seleccionarNave(arrayConfig[indexAux][2]);
+    seleccionarLugar(arrayConfig[indexAux][3]);
+}
+
+/*CONFIGURATION*/
+
+
+
+
+function showAlert(text){
+    $("#pModal").text(text);
+    $("#alertModal").modal({backdrop: "static", keyboard: "false"});
 }

@@ -34,9 +34,6 @@ function login() {
         url: url,
         data: {username: username, password: pwdCrypt, remember: remember},
         success: function (u) {
-            if (u["mess"] === ("The user doesn't exists.\nPlease register before log in.")) {
-                showAlert(u["mess"]);
-            }
             location.reload();
         },
         error: function (e) {
