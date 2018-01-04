@@ -65,7 +65,7 @@
         <div class="d">d</div>
 
         <div class="panel panel-default panel-modal" id="pausePanel">
-            <div class="panel-heading">PAUSE</div>
+            <div class="panel-heading"><h2>PAUSE</h2></div>
             <div class="panel-body"><div class="btn-group-vertical">
                     <button type="button" class="btn btn-panel">Resume</button>
                     <button type="button" class="btn btn-panel">Restart</button>
@@ -73,32 +73,47 @@
         </div>
 
         <div class="panel panel-default panel-modal" id="instructionPanel">
-            <div class="panel-heading">INSTRUCTIONS</div>
-            <div class="panel-body">Panel Content</div>
+            <div class="panel-heading"><h2>INSTRUCTIONS</h2></div>
+            <div class="panel-body"><div class="well well-lg">
+
+                    <p> The objective of Lunar Lander is to land the ship on the surface of the Moon without crashing. </p>
+                    <p> You can propel the ship <span class = "pc"> using the Space Bar </span> <span class = "movil"> by touching the screen </span> to reduce its speed and prevent it from exploding. But watch carefully! Gasoline is limited and you could run out of it.
+                    </p>
+                    <p class = "pc"> You can pause the game by pressing P at any time. </p>
+                    <p class = "pc"> Use the mouse to navigate the top menu. </p>
+                    <p> Good Luck Astronaut! </p>
+                </div></div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
         </div>
 
         <div class="panel panel-default panel-modal" id="optionPanel">
-            <div class="panel-heading">OPTIONS</div>
+            <div class="panel-heading"><h2>OPTIONS</h2></div>
             <div class="panel-body">Panel Content</div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
         </div>
-        
+
         <div class="panel panel-default panel-modal" id="configurationPanel">
-            <div class="panel-heading">CONFIGURATION</div>
+            <div class="panel-heading"><h2>CONFIGURATION</h2></div>
             <div class="panel-body">Panel Content</div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
         </div>
 
         <div class="panel panel-default panel-modal" id="rankingPanel">
-            <div class="panel-heading">RANKING</div>
+            <div class="panel-heading"><h2>RANKING</h2></div>
             <div class="panel-body">Panel Content</div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
         </div>
 
         <div class="panel panel-default panel-modal" id="aboutPanel">
-            <div class="panel-heading">ABOUT</div>
-            <div class="panel-body">Panel Content</div>
+            <div class="panel-heading"><h2>ABOUT</h2></div>
+            <div class="panel-body"><div class="well well-lg">
+                    <p> IES Francesc Borja Moll - 2º DAM - Access to Database</p>
+                    <p> This project has been producd out by the following people: </p>
+                    <p> - Ángel Barceló </p>
+                    <p> - Carlos Enrique Dorst </p>
+                    <p> - Ramón Moreno </p>
+                    <p> <span class="glyphicon glyphicon-copyright-mark"></span> All rights reserved  </p>
+                </div></div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
         </div>
     </body>

@@ -70,6 +70,20 @@ $(document).ready(function () {
         }
     });
 
+    document.onkeypress = function keyCode(event) {
+        var x = event.keyCode;
+        if ((x === 112 || x === 80) && !pauseVisible && !isPause) {
+            stop();
+            hideAll();
+            $("#pausePanel").show();
+            pauseVisible = true;
+        } else if ((x === 112 || x === 80) && pauseVisible) {
+            start();
+            $("#pausePanel").hide();
+            pauseVisible = false;
+        }
+    };
+
     $("#playNav").click(function () {
         if (pauseVisible) {
             start();
@@ -99,7 +113,6 @@ $(document).ready(function () {
     });
 
     $("#optionNav").click(function () {
-        alert(optionsVisible);
         if (optionsVisible) {
             start();
             $("#optionPanel").hide();
@@ -140,7 +153,7 @@ $(document).ready(function () {
             aboutVisible = true;
         }
     });
-    
+
     $("#mobilePause").click(function () {
         if (mobilePause) {
             start();
@@ -151,6 +164,11 @@ $(document).ready(function () {
             hideAll();
             mobilePause = true;
         }
+    });
+    
+    $(".btn-return").click(function(){
+        hideAll();
+        start();
     });
 
     //Empezar a mover la nave justo después de cargar la página ---------------------------------------------------
