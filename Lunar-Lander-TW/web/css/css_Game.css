@@ -33,9 +33,9 @@ body,html{
 
 .navbar-nav > li > a ,.navbar-brand{padding-top:10px !important; padding-bottom:10px !important;}
 .navbar-brand{padding-top: 10px !important;padding-bottom: 10px !important;height:40px}
-.navbar {min-height:40px !important}
+.navbar {min-height:40px}
 .navbar-toggle{
-    margin-top: 5px;margin-bottom: 5px;height:30px;width: 30px;padding: 6px 7px;
+    margin-top: 5px;margin-bottom: 5px;height:30px;width: 30px;padding: 3px 4px;
 }
 .navbar-inverse .navbar-nav>li>a, .navbar-inverse .navbar-brand{
     font-weight: bold;
@@ -88,11 +88,9 @@ body,html{
     font-size: 14px;
     height: auto;
     font-weight: bold;
-    padding: 14px 0;
+    padding: 14px;
     text-transform: uppercase;
     border-color: #59B2E6;
-    width: 100%;
-    max-width: 300px;
 }
 
 .btn-panel:hover,.btn-panel:focus{
@@ -139,10 +137,35 @@ body,html{
     min-width: 200px; 
 }
 
+#chooseOption{
+    margin-bottom: 10px;
+    width:100%;
+    background: linear-gradient(limegreen,green);
+    border-color: mediumseagreen;
+}
+
+#chooseOption:hover,
+#chooseOption:focus {
+	color: #fff;
+	background: linear-gradient(#28a428, #004d00);
+
+}
+
+#selOptions{
+    background: linear-gradient(  black, #00004d);
+    border-color: #787878;
+    color:lime;
+    font-weight: bold;
+    min-width: 400px;
+}
+option{
+    background-color: black;
+}
+
 /*CSS desktop*/
 @media screen and (min-width: 769px){    
     .movil{
-        display:none;
+        display:none !important;
     }
     .row{
         height:100%;
@@ -171,15 +194,19 @@ body,html{
 /*CSS mobile*/
 @media screen and (max-width: 768px){
     .pc{
-        display:none;
+        display:none !important;
     }
     .col-sm-4{
         height: auto;
         z-index:5;
     }
 
-    .glyphicon-cog{
+    .glyphicon-repeat,.glyphicon-play,.glyphicon-pause,.glyphicon-cog{
         color: dodgerblue;
+    }
+    #myNavbar{
+        text-align: center;
+        font-size: 20px;
     }
     #info_Panel{
         padding:5px 10px;
@@ -197,6 +224,14 @@ body,html{
         margin-left: 45%;
         margin-top: 30%;
 
+    }
+    
+    button[disabled]{
+        background-color: #404040;
+    }
+    
+    button[disabled]>.glyphicon{
+        color:royalblue;
     }
 
 }

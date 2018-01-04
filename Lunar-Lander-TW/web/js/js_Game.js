@@ -31,6 +31,7 @@ var configVisible = false;
 var rankingVisible = false;
 var aboutVisible = false;
 var mobilePause = false;
+var mobileNav=false;
 
 //Configuration
 var shipImg = "nave";
@@ -48,7 +49,7 @@ $(document).ready(function () {
     combustible = $("#fuel_Panel");
 
 
-    //Events movement
+    /*EVENTS GAME MOVEMENT*/
     document.ontouchstart = function () {
         motorOn();
     };
@@ -84,6 +85,7 @@ $(document).ready(function () {
         }
     };
 
+    /*NAVBAR EVENTS*/
     $("#playNav").click(function () {
         if (pauseVisible) {
             start();
@@ -152,28 +154,73 @@ $(document).ready(function () {
             $("#aboutPanel").show();
             aboutVisible = true;
         }
+    });  
+
+    $(".btn-return").click(function () {
+        hideAll();
+        start();
     });
 
+    /*PAUSE EVENTS*/
+    $("#resumePause").click(function () {
+        start();
+        $("#pausePanel").hide();
+        pauseVisible = false;
+    });
+    
+    $("#restartPause").click(function () {
+        restart();
+        $("#pausePanel").hide();
+        pauseVisible = false;
+    });
+    
+    /*MOBILE EVENTS*/
+    $("#mobileRestart").click(function () {
+        restart();
+    });
+    
     $("#mobilePause").click(function () {
-        if (mobilePause) {
+
+            if (mobilePause) {
             start();
             mobilePause = false;
-
+            $("#mobilePause").text("");
+    $("#mobilePause").append("<span class=\"glyphicon glyphicon-pause\"></span>");
         } else {
             stop();
             hideAll();
             mobilePause = true;
+            $("#mobilePause").text("");
+            $("#mobilePause").append("<span class=\"glyphicon glyphicon-play\"></span>");
         }
+        
+        
     });
     
-    $(".btn-return").click(function(){
-        hideAll();
-        start();
+    $("#mobileNav").click(function () {
+        if (mobileNav) {
+            if(!mobilePause){
+            start();
+        }
+            mobileNav = false;
+            $("#mobilePause").prop('disabled', false);         
+            $("#mobileRestart").prop('disabled', false);
+            $(".navbar").css("min-height", "40px");
+        } else {
+            stop();
+            hideAll();
+            mobileNav = true;
+            $("#mobilePause").prop('disabled', true);
+            $("#mobileRestart").prop('disabled', true);
+            $(".navbar").css("min-height", "100%");
+        }
     });
 
     //Empezar a mover la nave justo después de cargar la página ---------------------------------------------------
     start();
 });
+
+/*GAME*/
 
 //Definición de funciones
 function start() {
@@ -225,7 +272,7 @@ function moverNave() {
         $("#nave").css("top", y + "%");
     } else {
         altura.text(0);
-        hayPausa = true;
+        isPausa = true;
         //comprobarAterrizaje();----------------------------------------------------------------------------
         motorOff();
         stop();
@@ -269,7 +316,7 @@ function actualizarFuel() {
     }
 
 }
-
+/*MENU*/
 function hideAll() {
     $("#pausePanel").hide();
     $("#instructionPanel").hide();
@@ -283,4 +330,25 @@ function hideAll() {
     configVisible = false;
     rankingVisible = false;
     aboutVisible = false;
+}
+
+function restart() {
+    restartConfig();
+    start();
+}
+
+function restartConfig() {
+    y = yStart;
+    fuel = fuelStart;
+    v = 0;
+    isFuel = true;
+    endGame = false;
+    clearInterval(timer);
+    timer = null;
+    clearInterval(timerFuel);
+    timerFuel = null;
+
+    combustible.css("color", "lime");
+    combustible.text(fuel.toFixed());
+    document.getElementById("naveimg").src = "img/" + shipImg + ".png";
 }

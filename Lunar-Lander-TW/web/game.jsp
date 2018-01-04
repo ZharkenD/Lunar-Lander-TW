@@ -22,14 +22,20 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" id="mobilePause" data-toggle="collapse" data-target="#myNavbar">
+                    <button type="button" class="navbar-toggle" id="mobileNav" data-toggle="collapse" data-target="#myNavbar">
                         <span class="glyphicon glyphicon-cog"></span>
+                    </button>
+                    <button type="button" class="navbar-toggle" id="mobilePause" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="glyphicon glyphicon-pause"></span>
+                    </button>
+                    <button type="button" class="navbar-toggle" id="mobileRestart">
+                        <span class="glyphicon glyphicon-repeat"></span>
                     </button>
                     <a class="navbar-brand">Lunar  <span class="glyphicon glyphicon-star"></span> Lander</a>
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav">
-                        <li><a id="playNav"><span class="glyphicon glyphicon-play"></span> Play</a></li>
+                        <li><a class="pc" id="playNav"><span class="glyphicon glyphicon-play"></span> Play</a></li>
                         <li><a id="instructionNav"><span class="glyphicon glyphicon-align-left"></span> Instructions</a></li>
                         <li><a id="optionNav"><span class="glyphicon glyphicon-wrench"></span> Options</a></li> 
                         <li><a id="rankingNav"><span class="glyphicon glyphicon-stats"></span> Ranking</a></li> 
@@ -67,8 +73,8 @@
         <div class="panel panel-default panel-modal" id="pausePanel">
             <div class="panel-heading"><h2>PAUSE</h2></div>
             <div class="panel-body"><div class="btn-group-vertical">
-                    <button type="button" class="btn btn-panel">Resume</button>
-                    <button type="button" class="btn btn-panel">Restart</button>
+                    <button type="button" class="btn btn-panel" id="resumePause">Resume</button>
+                    <button type="button" class="btn btn-panel" id="restartPause">Restart</button>
                 </div></div>
         </div>
 
@@ -88,7 +94,23 @@
 
         <div class="panel panel-default panel-modal" id="optionPanel">
             <div class="panel-heading"><h2>OPTIONS</h2></div>
-            <div class="panel-body">Panel Content</div>
+            <div class="panel-body">
+                <div class="well">
+                    <p>Welcome </p>
+                    <p>Please, choose your configuration</p>
+                </div>
+                <select class="form-control" id="selOptions">
+
+                </select>
+                <br>
+                <button type="button" class="btn btn-panel" id="chooseOption">Choose this configuration</button>
+                <br>
+                <div class="btn-group-vertical">
+                    <button type="button" class="btn btn-panel">New configuration</button>
+                    <button type="button" class="btn btn-panel">Modifiy selected configuration</button>
+                    <button type="button" class="btn btn-panel">Delete selected configuration</button>
+                </div>
+            </div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
         </div>
 
