@@ -34,9 +34,7 @@ function login() {
         url: url,
         data: {username: username, password: pwdCrypt, remember: remember},
         success: function (u) {
-            if (u["mess"] === ("The user doesn't exists.\nPlease register before log in.")) {
-                showAlert(u["mess"]);
-            }
+            showAlert(u["mess"]);
             location.reload();
         },
         error: function (e) {
@@ -73,15 +71,6 @@ function register() {
             url: url,
             data: {name: name, username: username, password: pwdCrypt, email: email},
             success: function (u) {
-                if (u["mess"] === "The username is already in use.") {
-                    $("#usernameReg").focus();
-                }
-                if (u["mess"] === "The email is already in use.") {
-                    $("#emailReg").focus();
-                }
-                if (u["mess"] === "User created correctly.") {
-                    cleanRegister();
-                }
                 showAlert(u["mess"]);
             },
             error: function (e) {

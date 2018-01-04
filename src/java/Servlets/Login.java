@@ -9,12 +9,33 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.EntityManagerFactory;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class Login extends HttpServlet {
+
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if (checkCookie(request)) {
+            RequestDispatcher a = request.getRequestDispatcher("/game.jsp");
+            a.forward(request, response);
+        } else {
+            RequestDispatcher a = request.getRequestDispatcher("/login.html");
+            a.forward(request, response);
+        }
+    }
 
     /**
      * Checking users credentials
@@ -48,7 +69,12 @@ public class Login extends HttpServlet {
                     response.setContentType("application/json");
                     PrintWriter pw = response.getWriter();
                     pw.println(gson.toJson(emess));
-                    //If the "Remember me" option is checked, the cookie will last longer
+                    if (request.getParameter("remember").equals("true")) {
+                        response.addCookie(createCookie("lunaruser", request.getParameter("username"), 86400));
+                        response.addCookie(createCookie("landerpass", request.getParameter("password"), 86400));//One day
+                    }
+                    response.addCookie(createCookie("lunaruser", request.getParameter("username"), 30));
+                    response.addCookie(createCookie("landerpass", request.getParameter("password"), 30));
                 } else {
                     Map<String, String> emess = new HashMap<>();
                     emess.put("error", "The password is not correct.");
@@ -70,5 +96,35 @@ public class Login extends HttpServlet {
             pw.println(gson.toJson(emess));
 
         }
+    }
+
+    private boolean checkCookie(HttpServletRequest request) {
+        String cookieUsername = "lunaruser";
+        String cookiePassword = "landerpass";
+        String username = null;
+        String password = null;
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                if (cookieUsername.equals(cookies[i].getName())) {
+                    username = cookies[i].getValue();
+                }
+                if (cookiePassword.equals(cookies[i].getName())) {
+                    password = cookies[i].getValue();
+                }
+            }
+            if (username != null && password != null) {
+                return true; // ======================================================================================>
+            }
+        }
+        return false;
+    }
+
+    private Cookie createCookie(String nameCookie, String contentCookie, int duration) {
+        Cookie cookie = new Cookie(nameCookie, contentCookie);
+        cookie.setMaxAge(duration);
+        cookie.setPath("/");
+        return cookie;
     }
 }
