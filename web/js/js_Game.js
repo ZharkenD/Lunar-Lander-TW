@@ -212,14 +212,13 @@ $(document).ready(function () {
     });
 
     $("#modifyConfigOption").click(function () {
-        putDataConfig();
         isModifying = true;
         $("#optionPanel").hide();
         $("#configurationPanel").modal({backdrop: "static", keyboard: "false"});
     });
 
     $("#deleteConfigOption").click(function () {
-        if (arrayConfig.length > 1) {
+        if ($("#selOptions").length > 1) {
             deleteConfig();
         } else {
             showAlert("You can't delete this configuration because you need to have at least one saved configuration.");
@@ -230,13 +229,12 @@ $(document).ready(function () {
     /*CONFIGURATION EVENTS*/
     $("#saveConfig").click(function () {
         saveConfig();
-        $("#configurationPanel").modal('hide');
-        $("#optionPanel").show();
 
     });
     $("#cancelConfig").click(function () {
         $("#configurationPanel").modal('hide');
         $("#optionPanel").show();
+        isModifying = false;
     });
 
     $("#easyConfig").click(function () {
@@ -323,6 +321,8 @@ $(document).ready(function () {
         restart();
         motorOff;
     });
+
+    loadUserConfig();
 
 });
 
@@ -448,7 +448,7 @@ function messageEndGame(txt1, txt2, txt3) {
 function calculateScore() {
     var fScore = 100 * actualFuel / fuelStart;
     var vScore = (speedImpact - v) * 100 / speedImpact;
-    var difScore = 1 + difNum*(0.5 +(difNum-1)*0.25);
+    var difScore = 1 + difNum * (0.5 + (difNum - 1) * 0.25);
     return ((fScore + vScore) * difScore).toFixed(2);
 
 }
@@ -494,7 +494,7 @@ function restartConfig() {
 }
 
 /*OPTIONS*/
-function cargarConfig() {
+function loadConfig() {
     var indexAux = $("#selOptions option:selected").index();
     selDif(arrayConfig[indexAux][1]);
     selShip(arrayConfig[indexAux][2]);
@@ -502,34 +502,53 @@ function cargarConfig() {
 }
 
 /*CONFIGURATION*/
+function checkConfigName() {
+    if ($("#configName").val().length <= 0) {
+        showAlert("Please, introduce a name for the configuration");
+        return false;
+    }
+    for (var i = 0; i < arrayConfig.length; i++) {
+        if ($("#configName").val() === arrayConfig[i][0]) {
+            showAlert("Configuration name is already chosen, please choose another");
+            return false;
+        }
+    }
+    return true;
+}
+
 function selDif(txt) {
-var msj = "";
     switch (txt) {
         case "facil":
             fuelStart = 100;
             speedImpact = 5;
-            difNum=0;
+            difNum = 0;
             break;
         case "medio":
             fuelStart = 75;
             speedImpact = 2.5;
-            difNum=0;
+            difNum = 1;
             break;
         case "dificil":
             fuelStart = 50;
             speedImpact = 1;
-            difNum=0;
+            difNum = 2;
             break;
     }
-
     restartConfig();
 }
 
 function selShip(txt) {
-
+    shipNum = txt;
+    shipImg = (shipNum === 0) ? "nave" : "ovni";
 }
 
 function selLand(txt) {
+    landNum = txt;
+    var urlAux = (landNum === 0) ? "url('img/LUN001.png')" : "url('img/MARS001.png')";
+    var colorAux = (landNum === 0) ? "#787878" : "#DB1616";
+
+    document.getElementsByClassName("d")[0].style.backgroundImage = urlAux;
+    document.getElementsByClassName("d")[0].style.backgroundColor = colorAux;
 
 }
 
@@ -540,15 +559,15 @@ function markLevel(txt) {
     $("#hardConfig").removeClass('btn-active');
     if (txt === 0) {
         $("#easyConfig").addClass('btn-active');
-        msj="EASY: You have 100 liters of fuel and you must land less than 5 m/s.";
+        msj = "EASY: You have 100 liters of fuel and you must land less than 5 m/s.";
         difAux = 0;
     } else if (txt === 1) {
         $("#mediumConfig").addClass('btn-active');
-        msj="MEDIUM: You have 75 liters of fuel and you must land less than 2,5 m/s.";
+        msj = "MEDIUM: You have 75 liters of fuel and you must land less than 2,5 m/s.";
         difAux = 1;
     } else if (txt === 2) {
         $("#hardConfig").addClass('btn-active');
-        msj="HARD: You have 50 liters of fuel and you must land less than 1 m/s.";
+        msj = "HARD: You have 50 liters of fuel and you must land less than 1 m/s.";
         difAux = 2;
     }
     $("#infoLevel").text(msj);
@@ -573,12 +592,115 @@ function markLand(txt) {
     $("#marsConfig").removeClass('btn-active');
     if (txt === 0) {
         $("#moonConfig").addClass('btn-active');
-        landAux=0;
+        landAux = 0;
     } else if (txt === 1) {
         $("#marsConfig").addClass('btn-active');
-        landAux=1;
+        landAux = 1;
     }
 }
+
+/*POST AL SERVLET*/
+function loadConfigUser() {
+    var url = "ConfigsUser";
+    var emess = "Unknown error";
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        success: function (jsn) {
+            $.each(jsn.config, function (i) {
+
+                var nameAux = this.configureName;
+                var difiAux = this.diffId;
+                var shAux = this.spaceshipId;
+                var lanAux = this.planetId;
+                arrayConfig.push([nameAux, difiAux, shAux, lanAux]);
+
+                $("#selOpciones").append("<option id=" + indexConfig + ">" + nameAux + " (" + difiAux +
+                        ", " + shAux + ", " + lanAux + ")</option>");
+
+                indexConfig++;
+
+            });
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
+}
+
+function saveConfig() {
+    if (checkConfigName()) {
+        var name = $("#nameConfig").val();
+
+        var url = "ConfigsUser";
+        var emess = "Unknown error";
+
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {nameConfig: name, difConfig: difAux, nave: shipAux, lugar: landAux},
+            success: function (u) {
+                arrayConfig.push([name, difAux, shipAux, landAux]);
+                $("#selOpciones").append("<option id=" + indexConfig + ">" + name + " (" + difAux +
+                        ", " + shipAux + ", " + landAux + ")</option>");
+                indexConfig++;
+
+                showAlert(u["mess"]);
+                $("#configurationPanel").modal('hide');
+                $("#optionPanel").show();
+            },
+            error: function (e) {
+                if (e["responseJSON"] === undefined)
+                    showAlert(emess);
+                else
+                    showAlert(e["responseJSON"]["error"]);
+            }
+        });
+
+    }
+}
+
+function deleteConfig() {
+//     var indexAux = $("#selOptions option:selected").index().id;
+//     var iAux = $("#selOptions")[1].id;
+//     alert(indexAux);
+//     alert(iAux);
+     //$("#selectBox option[id='option1']").remove();
+//    if (checkConfigName()) {
+//        var name = $("#nameConfig").val();
+//
+//        var url = "ConfigsUser";
+//        var emess = "Unknown error";
+//
+//        $.ajax({
+//            method: "POST",
+//            url: url,
+//            data: {nameConfig: name, difConfig: difAux, nave: shipAux, lugar: landAux},
+//            success: function (u) {
+//                arrayConfig.push([name, difAux, shipAux, landAux]);
+//                $("#selOpciones").append("<option id=" + indexConfig + ">" + name + " (" + difAux +
+//                        ", " + shipAux + ", " + landAux + ")</option>");
+//                indexConfig++;
+//
+//                showAlert(u["mess"]);
+//                $("#configurationPanel").modal('hide');
+//                $("#optionPanel").show();
+//            },
+//            error: function (e) {
+//                if (e["responseJSON"] === undefined)
+//                    showAlert(emess);
+//                else
+//                    showAlert(e["responseJSON"]["error"]);
+//            }
+//        });
+//
+//    }
+}
+
 
 
 /*OTHERS*/
