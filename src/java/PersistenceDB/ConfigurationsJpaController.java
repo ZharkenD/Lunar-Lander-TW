@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 
 public class ConfigurationsJpaController implements Serializable {
 
@@ -200,6 +201,18 @@ public class ConfigurationsJpaController implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    
+        public Users findUser(String username) {
+        EntityManager em = getEntityManager();
+        try {
+            return (Users) em.createNamedQuery("Users.findByUsername").setParameter("username", username).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }

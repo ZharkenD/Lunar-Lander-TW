@@ -12,6 +12,10 @@
         <servlet-name>Login</servlet-name>
         <servlet-class>Servlets.Login</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ConfigLoader</servlet-name>
+        <servlet-class>Servlets.ConfigLoader</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/Register</url-pattern>
@@ -19,6 +23,10 @@
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfigLoader</servlet-name>
+        <url-pattern>/ConfigLoader</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

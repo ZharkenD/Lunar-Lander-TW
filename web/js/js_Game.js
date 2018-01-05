@@ -601,7 +601,7 @@ function markLand(txt) {
 
 /*POST AL SERVLET*/
 function loadConfigUser() {
-    var url = "ConfigsUser";
+    var url = "ConfigLoader";
     var emess = "Unknown error";
 
     $.ajax({
@@ -636,7 +636,7 @@ function saveConfig() {
     if (checkConfigName()) {
         var name = $("#nameConfig").val();
 
-        var url = "ConfigsUser";
+        var url = "ConfigLoader";
         var emess = "Unknown error";
 
         $.ajax({
