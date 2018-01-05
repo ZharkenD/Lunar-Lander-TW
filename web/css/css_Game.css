@@ -1,5 +1,6 @@
 body,html{
     height:100%;
+    width: 100%;
     padding:0px;
     margin:0px;
     background: black;
@@ -19,6 +20,7 @@ body,html{
 
 .list-group{
     margin:0;
+
 }
 
 .list-group-item{
@@ -33,9 +35,9 @@ body,html{
 
 .navbar-nav > li > a ,.navbar-brand{padding-top:10px !important; padding-bottom:10px !important;}
 .navbar-brand{padding-top: 10px !important;padding-bottom: 10px !important;height:40px}
-.navbar {min-height:40px !important}
+.navbar {min-height:40px}
 .navbar-toggle{
-    margin-top: 5px;margin-bottom: 5px;height:30px;width: 30px;padding: 6px 7px;
+    margin-top: 5px;margin-bottom: 5px;height:30px;width: 30px;padding: 3px 4px;
 }
 .navbar-inverse .navbar-nav>li>a, .navbar-inverse .navbar-brand{
     font-weight: bold;
@@ -46,9 +48,16 @@ body,html{
     color:deepskyblue !important;
 }
 
-.d{background-color:pink;height:7%;width:100%;position:fixed;bottom:0px;}
+.d{background-color: #787878;
+   background-image: url("../img/LUN001.png");
+   background-size: 17%;
+   background-repeat: repeat-x;
+   height:7%;
+   width:100%;
+   position:fixed;
+   bottom:0px}
 
-#nave{text-align:center;position:fixed;top:23%;width:100%;height:20%;z-index:1;background-color: red}
+#nave{text-align:center;position:fixed;top:23%;width:100%;height:20%;z-index:1;}
 #naveimg{height:100%}
 #earth{
     display: block;
@@ -58,6 +67,8 @@ body,html{
 
 .panel-modal{
     display:none;
+    z-index: 2048;
+    min-width: 450px;
 }
 
 .panel-default {
@@ -70,18 +81,35 @@ body,html{
     border-color: #787878;
 }
 
-.panel-body{
+.panel-body,.modal-body{
     background-image: url(../img/background_metal.png);
     background-color: #595959;
 }
 
-.panel-footer{
+.panel-footer,.modal-footer{
     background: linear-gradient(#a3a3a3,#595959);
     border-color: #787878;
 }
 
-.btn-return {
+.btn-panel{
     background: linear-gradient(dodgerblue, deepskyblue);
+    outline: none;
+    color: #fff;
+    font-size: 14px;
+    height: auto;
+    font-weight: bold;
+    padding: 14px;
+    text-transform: uppercase;
+    border-color: #59B2E6;
+}
+
+.btn-panel:hover,.btn-panel:focus{
+    color: #fff;
+    background: linear-gradient(#0080ff, #0099cc);
+}
+
+.btn-return,#cancelConfig {
+    background: linear-gradient(red,darkred);
     outline: none;
     color: #fff;
     font-size: 14px;
@@ -89,18 +117,178 @@ body,html{
     font-weight: bold;
     padding: 14px 0;
     text-transform: uppercase;
-    border-color: #59B2E6;
+    border-color: salmon;
     width:100%;
-    max-width: 250px;
+
 }
 .btn-return:hover,
-.btn-return:focus {
+.btn-return:focus,#cancelConfig:hover,#cancelConfig:focus {
     color: #fff;
-    background: linear-gradient(#0080ff, #0099cc);
+    background: linear-gradient(#990000, #660000);
+}
+.btn-return{
+    max-width: 250px;
+}
+
+.well{
+    background:linear-gradient(black,  black, #00004d);
+    border-color: #787878;
+}
+.well>p{
+    color:deepskyblue;
+    font-weight: bold;
+}
+
+.panel-heading>h2,h3{
+    background:linear-gradient(#e600e6,#800080);
+    font-weight: bold;
+    text-align: center;
+    color: gold;
+    border: 5px #b300b3 outset;
+    border-radius: 7px;
+    margin:0;
+    min-width: 200px; 
+    padding: 3px 0;
+}
+
+h3{
+    max-width: 300px;
+    margin:auto;
+    margin-bottom: 5px;
+    margin-top: 25px;
+}
+
+.btn-active,.btn-active:hover,.btn-active:focus{
+    background:linear-gradient(mediumblue,darkblue);
+    color:orangered;
+}
+
+#chooseOption{
+    margin-bottom: 10px;
+    width:100%;
+    background: linear-gradient(limegreen,green);
+    border-color: mediumseagreen;
+}
+
+#chooseOption:hover,
+#chooseOption:focus {
+    color: #fff;
+    background: linear-gradient(#28a428, #004d00);
+
+}
+
+#selOptions{
+    background: linear-gradient(  black, #00004d);
+    border-color: #787878;
+    color:lime;
+    font-weight: bold;
+    min-width: 400px;
+}
+option{
+    background-color: black;
+}
+
+#alertModal{
+    z-index: 3000;
+}
+
+#pModal{
+    color:deepskyblue;
+    font-size: 17px;
+    background-color: black;
+    padding: 1px 5px;
+    border: 1px solid #787878;
+    border-radius: 4px;
+}
+
+#pModal{
+    font-weight: bold;
+}
+
+.modal-content{
+    border-color: #787878;
+    border-radius: 4px;
+}
+
+#okModal,#saveConfig,#playEnd{
+    background: linear-gradient(limegreen,green);
+    outline: none;
+    color: #fff;
+    font-size: 14px;
+    height: auto;
+    font-weight: bold;
+    padding: 14px 0;
+    text-transform: uppercase;
+    border-color: mediumseagreen;
+}
+
+#okModal:hover,
+#okModal:focus,#saveConfig:hover,#saveConfig:focus,#playEnd:hover,#playEnd:focus  {
+    color: #fff;
+    background: linear-gradient(#28a428, #004d00);
+}
+
+#playEnd{
+    min-width: 250px;
+}
+
+#endPanel{
+    z-index:6;
+}
+
+.list-users{
+    border:0;
+    background-color: transparent;
+    color:deepskyblue;
+}
+
+#list-g-users{
+    background: linear-gradient(black, #00004d);
+    border: 1px solid #787878;
+    border-radius: 4px;
+}
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
 }
 
 /*CSS desktop*/
-@media screen and (min-width: 769px){
+@media screen and (min-width: 769px){    
+    .movil{
+        display:none !important;
+    }
     .row{
         height:100%;
     }
@@ -127,30 +315,62 @@ body,html{
 }
 /*CSS mobile*/
 @media screen and (max-width: 768px){
+    .pc{
+        display:none !important;
+    }
+    .d{
+        background-color: #787878;
+        background-image: url("../img/LUN001.png");
+        background-size: 55%;
+        background-repeat: repeat-x;
+        position:fixed;
+        bottom:0px;
+        height:7%;
+        width:100%
+    }
     .col-sm-4{
         height: auto;
         z-index:5;
     }
 
-    .glyphicon-cog{
+    .glyphicon-repeat,.glyphicon-play,.glyphicon-pause,.glyphicon-cog{
         color: dodgerblue;
+    }
+    #myNavbar{
+        text-align: center;
+        font-size: 20px;
     }
     #info_Panel{
         padding:5px 10px;
     }
-    .panel-modal{
-        width:100%;
-        min-height: 100%;
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+    /*   .panel-modal{
+            margin: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-height: 100%;
+        }*/
+
+
     #earth{
         margin-left: 45%;
         margin-top: 30%;
 
+    }
+
+    button[disabled]{
+        background-color: #404040;
+    }
+
+    button[disabled]>.glyphicon{
+        color:royalblue;
+    }
+    #endPanel{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     }
 
 }
