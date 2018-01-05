@@ -145,6 +145,9 @@ $(document).ready(function () {
             stop();
             hideAll();
             $("#rankingPanel").show();
+            loadMyBest();
+            loadWorldBest();
+            loadTopTen();
             rankingVisible = true;
         }
     });
@@ -159,6 +162,7 @@ $(document).ready(function () {
             stop();
             hideAll();
             $("#usersPanel").show();
+            loadUsersOnline();
             usersVisible = true;
         }
     });
@@ -209,16 +213,29 @@ $(document).ready(function () {
     $("#newConfigOption").click(function () {
         $("#optionPanel").hide();
         $("#configurationPanel").modal({backdrop: "static", keyboard: "false"});
+        $("#configName").val("");
+        markLevel(0);
+        markShip(0);
+        markLand(0);
     });
 
     $("#modifyConfigOption").click(function () {
         isModifying = true;
         $("#optionPanel").hide();
         $("#configurationPanel").modal({backdrop: "static", keyboard: "false"});
+
+        var indexAux = $("#selOptions option:selected").index();
+        var idAux = document.getElementById("selOptions")[indexAux].id;
+
+        $("#configName").val(arrayConfig[idAux][0]);
+        markLevel(arrayConfig[idAux][1]);
+        markShip(arrayConfig[idAux][2]);
+        markLand(arrayConfig[idAux][3]);
     });
 
     $("#deleteConfigOption").click(function () {
-        if ($("#selOptions").length > 1) {
+        var auxLength = document.getElementById("selOptions").length;
+        if (auxLength > 1) {
             deleteConfig();
         } else {
             showAlert("You can't delete this configuration because you need to have at least one saved configuration.");
@@ -228,7 +245,11 @@ $(document).ready(function () {
 
     /*CONFIGURATION EVENTS*/
     $("#saveConfig").click(function () {
-        saveConfig();
+        if (!isModifying) {
+            saveConfig();
+        } else {
+            modifyConfig();
+        }
 
     });
     $("#cancelConfig").click(function () {
@@ -502,15 +523,17 @@ function loadConfig() {
 }
 
 /*CONFIGURATION*/
-function checkConfigName() {
+function checkConfigName(txt) {
     if ($("#configName").val().length <= 0) {
         showAlert("Please, introduce a name for the configuration");
         return false;
     }
     for (var i = 0; i < arrayConfig.length; i++) {
-        if ($("#configName").val() === arrayConfig[i][0]) {
-            showAlert("Configuration name is already chosen, please choose another");
-            return false;
+        if (!(arrayConfig[i][0] === txt)) {
+            if ($("#configName").val() === arrayConfig[i][0]) {
+                showAlert("Configuration name is already chosen, please choose another");
+                return false;
+            }
         }
     }
     return true;
@@ -518,17 +541,17 @@ function checkConfigName() {
 
 function selDif(txt) {
     switch (txt) {
-        case "facil":
+        case 0:
             fuelStart = 100;
             speedImpact = 5;
             difNum = 0;
             break;
-        case "medio":
+        case 1:
             fuelStart = 75;
             speedImpact = 2.5;
             difNum = 1;
             break;
-        case "dificil":
+        case 2:
             fuelStart = 50;
             speedImpact = 1;
             difNum = 2;
@@ -601,7 +624,7 @@ function markLand(txt) {
 
 /*POST AL SERVLET*/
 function loadConfigUser() {
-    var url = "ConfigLoader";
+    var url = "ConfigsUser";
     var emess = "Unknown error";
 
     $.ajax({
@@ -616,8 +639,13 @@ function loadConfigUser() {
                 var lanAux = this.planetId;
                 arrayConfig.push([nameAux, difiAux, shAux, lanAux]);
 
-                $("#selOpciones").append("<option id=" + indexConfig + ">" + nameAux + " (" + difiAux +
-                        ", " + shAux + ", " + lanAux + ")</option>");
+                var anotherDif = (difiAux === 0) ? "Easy" : (difiAux === 1) ? "Medium" : "Hard";
+                var anotherShip = (shAux === 0) ? "Spaceship" : "UFO";
+                var anotherLand = (lanAux === 0) ? "Moon" : "Mars";
+
+
+                $("#selOpciones").append("<option id=" + indexConfig + ">" + nameAux + " (" + anotherDif +
+                        ", " + anotherLand + ", " + lanAux + ")</option>");
 
                 indexConfig++;
 
@@ -633,16 +661,16 @@ function loadConfigUser() {
 }
 
 function saveConfig() {
-    if (checkConfigName()) {
+    if (checkConfigName("")) {
         var name = $("#nameConfig").val();
 
-        var url = "ConfigLoader";
+        var url = "ConfigsUser";
         var emess = "Unknown error";
 
         $.ajax({
             method: "POST",
             url: url,
-            data: {nameConfig: name, difConfig: difAux, nave: shipAux, lugar: landAux},
+            data: {nameConfig: name, difConfig: difAux, shipConfig: shipAux, landConfig: landAux},
             success: function (u) {
                 arrayConfig.push([name, difAux, shipAux, landAux]);
                 $("#selOpciones").append("<option id=" + indexConfig + ">" + name + " (" + difAux +
@@ -665,40 +693,190 @@ function saveConfig() {
 }
 
 function deleteConfig() {
-//     var indexAux = $("#selOptions option:selected").index().id;
-//     var iAux = $("#selOptions")[1].id;
-//     alert(indexAux);
-//     alert(iAux);
-     //$("#selectBox option[id='option1']").remove();
-//    if (checkConfigName()) {
-//        var name = $("#nameConfig").val();
-//
-//        var url = "ConfigsUser";
-//        var emess = "Unknown error";
-//
-//        $.ajax({
-//            method: "POST",
-//            url: url,
-//            data: {nameConfig: name, difConfig: difAux, nave: shipAux, lugar: landAux},
-//            success: function (u) {
-//                arrayConfig.push([name, difAux, shipAux, landAux]);
-//                $("#selOpciones").append("<option id=" + indexConfig + ">" + name + " (" + difAux +
-//                        ", " + shipAux + ", " + landAux + ")</option>");
-//                indexConfig++;
-//
-//                showAlert(u["mess"]);
-//                $("#configurationPanel").modal('hide');
-//                $("#optionPanel").show();
-//            },
-//            error: function (e) {
-//                if (e["responseJSON"] === undefined)
-//                    showAlert(emess);
-//                else
-//                    showAlert(e["responseJSON"]["error"]);
-//            }
-//        });
-//
-//    }
+    var indexAux = $("#selOptions option:selected").index();
+    var idAux = document.getElementById("selOptions")[indexAux].id;
+
+    var url = "DeleteConfigsUser";
+    var emess = "Unknown error";
+
+    var nameAux = arrayConfig[idAux][0];
+    var difiAux = arrayConfig[idAux][1];
+    var shAux = arrayConfig[idAux][2];
+    var lanAux = arrayConfig[idAux][3];
+
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: {nameConfig: nameAux, difConfig: difiAux, shipConfig: shAux, landConfig: lanAux},
+        success: function (u) {
+
+            showAlert(u["mess"]);
+
+            $("#selOptions option[id='" + idAux + "']").remove();
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
+}
+
+function modifyConfig() {
+    var indexAux = $("#selOptions option:selected").index();
+    var idAux = document.getElementById("selOptions")[indexAux].id;
+    if (checkConfigName(arrayConfig[idAux][0])) {
+        var name = $("#nameConfig").val();
+
+        var url = "ConfigsUser";
+        var emess = "Unknown error";
+
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {nameConfig: name, difConfig: difAux, shipConfig: shipAux, landConfig: landAux},
+            success: function (u) {
+                arrayConfig[idAux][0] = name;
+                arrayConfig[idAux][1] = difAux;
+                arrayConfig[idAux][2] = shipAux;
+                arrayConfig[idAux][3] = landAux;
+
+                var anotherDif = (difAux === 0) ? "Easy" : (difAux === 1) ? "Medium" : "Hard";
+                var anotherShip = (shipAux === 0) ? "Spaceship" : "UFO";
+                var anotherLand = (landAux === 0) ? "Moon" : "Mars";
+
+                $("#selOptions option[id='" + idAux + "']").remove();
+                $("#selOpciones").append("<option id=" + idAux + ">" + name + " (" + anotherDif +
+                        ", " + anotherShip + ", " + anotherLand + ")</option>");
+
+                showAlert(u["mess"]);
+                isModifying = false;
+                $("#configurationPanel").modal('hide');
+                $("#optionPanel").show();
+            },
+            error: function (e) {
+                if (e["responseJSON"] === undefined)
+                    showAlert(emess);
+                else
+                    showAlert(e["responseJSON"]["error"]);
+            }
+        });
+    }
+
+}
+
+function loadUsersOnline() {
+    var url = "UsersOnline";
+    var emess = "Unknown error";
+
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        success: function (jsn) {
+            $("#list-g-users").text("");
+
+            $.each(jsn.config, function (i) {
+                var nameAux = this.username;
+                $("#list-g-users").append("<li class=\"list-group-item list-users\">" + nameAux + "</li>");
+
+            });
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
+}
+
+function loadMyBest() {
+    var url = "UsersOnline";
+    var emess = "Unknown error";
+
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        success: function (jsn) {
+            var nameAux = this.configureName;
+            var difiAux = this.diffId;
+            var scorAux = this.score;
+            var anotherDif = (difAux === 0) ? "Easy" : (difiAux === 1) ? "Medium" : "Hard";
+
+            $("#mybestbody").text("");
+
+            $.each(jsn.config, function (i) {
+
+                $("#mybestbody").append("<tr><td>"+nameAux+"</td><td>"+anotherDif+"</td><td>"+scorAux+"</td></tr>");
+
+            });
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
+}
+
+function loadWorldBest() {
+    var url = "UsersOnline";
+    var emess = "Unknown error";
+
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        success: function (jsn) {
+            var nameAux = this.username;
+            var difiAux = this.diffId;
+            var scorAux = this.score;
+            var anotherDif = (difAux === 0) ? "Easy" : (difiAux === 1) ? "Medium" : "Hard";
+
+            $("#mybestbody").text("");
+
+            $.each(jsn.config, function (i) {
+                $("#mybestbody").append("<tr><td>"+nameAux+"</td><td>"+anotherDif+"</td><td>"+scorAux+"</td></tr>");
+            });
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
+}
+
+function loadTopTen() {
+    var url = "UsersOnline";
+    var emess = "Unknown error";
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        success: function (jsn) {
+            var nameAux = this.username;
+            var gamesAux = this.numGames;
+           
+
+            $("#mybestbody").text("");
+
+            $.each(jsn.config, function (i) {
+                $("#mybestbody").append("<tr><td>"+nameAux+"</td><td>"+gamesAux+"</td></tr>");
+            });
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
 }
 
 
