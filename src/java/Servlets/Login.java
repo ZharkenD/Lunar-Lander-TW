@@ -71,10 +71,10 @@ public class Login extends HttpServlet {
                     PrintWriter pw = response.getWriter();
                     pw.println(gson.toJson(emess));
                     if (request.getParameter("remember").equals("true")) {
-                        response.addCookie(createCookie("lunar", Hash.sha1(request.getParameter("username")), 86400));
+                        response.addCookie(createCookie("lunar", request.getParameter("username"), 86400));
                         response.addCookie(createCookie("lander", Hash.sha1(request.getParameter("password")), 86400));//One day
                     } else {
-                        response.addCookie(createCookie("lunar", Hash.sha1(request.getParameter("username")), 30));
+                        response.addCookie(createCookie("lunar", request.getParameter("username"), 30));
                         response.addCookie(createCookie("lander", Hash.sha1(request.getParameter("password")), 30));
                     }
                 } else {
@@ -101,6 +101,9 @@ public class Login extends HttpServlet {
     }
 
     private boolean checkCookie(HttpServletRequest request) {
+        EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
+        UsersJpaController ufc = new UsersJpaController(emf);
+
         String cookieUsername = "lunar";
         String cookiePassword = "lander";
         String username = null;
@@ -116,8 +119,12 @@ public class Login extends HttpServlet {
                     password = cookies[i].getValue();
                 }
             }
+            //Check if the cookie has the correct combination user & password
             if (username != null && password != null) {
-                return true; // ======================================================================================>
+                Users user = ufc.findUser(username);
+                if (user.getPassword().equals(password)) {
+                    return true; // ====================================================================================>
+                }
             }
         }
         return false;
