@@ -145,6 +145,9 @@ $(document).ready(function () {
             stop();
             hideAll();
             $("#rankingPanel").show();
+            loadMyBest();
+            loadWorldBest();
+            loadTopTen();
             rankingVisible = true;
         }
     });
@@ -635,7 +638,7 @@ function loadConfigUser() {
                 var shAux = this.spaceshipId;
                 var lanAux = this.planetId;
                 arrayConfig.push([nameAux, difiAux, shAux, lanAux]);
-                
+
                 var anotherDif = (difiAux === 0) ? "Easy" : (difiAux === 1) ? "Medium" : "Hard";
                 var anotherShip = (shAux === 0) ? "Spaceship" : "UFO";
                 var anotherLand = (lanAux === 0) ? "Moon" : "Mars";
@@ -734,19 +737,18 @@ function modifyConfig() {
             url: url,
             data: {nameConfig: name, difConfig: difAux, shipConfig: shipAux, landConfig: landAux},
             success: function (u) {
-                
-                arrayConfig[idAux][0]=name;
-                arrayConfig[idAux][1]=difAux;
-                arrayConfig[idAux][2]=shipAux;
-                arrayConfig[idAux][3]=landAux;
-                
-                var anotherDif = (difAux === 0) ? "Easy" : (difiAux === 1) ? "Medium" : "Hard";
+                arrayConfig[idAux][0] = name;
+                arrayConfig[idAux][1] = difAux;
+                arrayConfig[idAux][2] = shipAux;
+                arrayConfig[idAux][3] = landAux;
+
+                var anotherDif = (difAux === 0) ? "Easy" : (difAux === 1) ? "Medium" : "Hard";
                 var anotherShip = (shipAux === 0) ? "Spaceship" : "UFO";
                 var anotherLand = (landAux === 0) ? "Moon" : "Mars";
-                
+
                 $("#selOptions option[id='" + idAux + "']").remove();
-                $("#selOpciones").append("<option id=" + idAux + ">" + name + " (" + difAux +
-                        ", " + shipAux + ", " + landAux + ")</option>");
+                $("#selOpciones").append("<option id=" + idAux + ">" + name + " (" + anotherDif +
+                        ", " + anotherShip + ", " + anotherLand + ")</option>");
 
                 showAlert(u["mess"]);
                 isModifying = false;
@@ -764,23 +766,108 @@ function modifyConfig() {
 
 }
 
-function loadUsersOnline(){
+function loadUsersOnline() {
     var url = "UsersOnline";
     var emess = "Unknown error";
-    
+
 
     $.ajax({
         url: url,
         dataType: 'json',
         success: function (jsn) {
-        $("#list-g-users").text("");
-    
+            $("#list-g-users").text("");
+
+            $.each(jsn.config, function (i) {
+                var nameAux = this.username;
+                $("#list-g-users").append("<li class=\"list-group-item list-users\">" + nameAux + "</li>");
+
+            });
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
+}
+
+function loadMyBest() {
+    var url = "UsersOnline";
+    var emess = "Unknown error";
+
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        success: function (jsn) {
+            var nameAux = this.configureName;
+            var difiAux = this.diffId;
+            var scorAux = this.score;
+            var anotherDif = (difAux === 0) ? "Easy" : (difiAux === 1) ? "Medium" : "Hard";
+
+            $("#mybestbody").text("");
+
             $.each(jsn.config, function (i) {
 
-                var nameAux = this.username;
+                $("#mybestbody").append("<tr><td>"+nameAux+"</td><td>"+anotherDif+"</td><td>"+scorAux+"</td></tr>");
 
-                $("#list-g-users").append("<li class=\"list-group-item list-users\">"+nameAux+"</li>");
+            });
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
+}
 
+function loadWorldBest() {
+    var url = "UsersOnline";
+    var emess = "Unknown error";
+
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        success: function (jsn) {
+            var nameAux = this.username;
+            var difiAux = this.diffId;
+            var scorAux = this.score;
+            var anotherDif = (difAux === 0) ? "Easy" : (difiAux === 1) ? "Medium" : "Hard";
+
+            $("#mybestbody").text("");
+
+            $.each(jsn.config, function (i) {
+                $("#mybestbody").append("<tr><td>"+nameAux+"</td><td>"+anotherDif+"</td><td>"+scorAux+"</td></tr>");
+            });
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
+}
+
+function loadTopTen() {
+    var url = "UsersOnline";
+    var emess = "Unknown error";
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        success: function (jsn) {
+            var nameAux = this.username;
+            var gamesAux = this.numGames;
+           
+
+            $("#mybestbody").text("");
+
+            $.each(jsn.config, function (i) {
+                $("#mybestbody").append("<tr><td>"+nameAux+"</td><td>"+gamesAux+"</td></tr>");
             });
         },
         error: function (e) {
