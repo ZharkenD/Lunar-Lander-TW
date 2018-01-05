@@ -38,7 +38,8 @@
                         <li><a class="pc" id="playNav"><span class="glyphicon glyphicon-play"></span> Play</a></li>
                         <li><a id="instructionNav"><span class="glyphicon glyphicon-align-left"></span> Instructions</a></li>
                         <li><a id="optionNav"><span class="glyphicon glyphicon-wrench"></span> Options</a></li> 
-                        <li><a id="rankingNav"><span class="glyphicon glyphicon-stats"></span> Ranking</a></li> 
+                        <li><a id="rankingNav"><span class="glyphicon glyphicon-stats"></span> Ranking</a></li>
+                        <li><a id="usersNav"><span class="glyphicon glyphicon-user"></span> Users Online</a></li> 
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a id="aboutNav"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
@@ -68,7 +69,7 @@
                 <img id="earth" src="img/earth.png" alt="img earth">
             </div>
         </div>
-        <div class="d">d</div>
+        <div class="d"></div>
 
         <div class="panel panel-default panel-modal" id="pausePanel">
             <div class="panel-heading"><h2>PAUSE</h2></div>
@@ -167,8 +168,39 @@
         </div>
 
         <div class="panel panel-default panel-modal" id="rankingPanel">
-            <div class="panel-heading"><h2>RANKING</h2></div>
-            <div class="panel-body">Panel Content</div>
+            <div class="panel-heading"><h2>SCORES</h2></div>
+            <div class="panel-body">
+                <!-- Tab links -->
+                <div class="tab">
+                    <button class="tablinks" onclick="openTab(event, 'mybest')">My best scores</button>
+                    <button class="tablinks" onclick="openTab(event, 'worldbest')">Best world scores</button>
+                    <button class="tablinks" onclick="openTab(event, 'topten')">Top 10 most played</button>
+                </div>
+
+                <!-- Tab content -->
+                <div id="mybest" class="tabcontent">
+                    
+                </div>
+
+                <div id="worldbest" class="tabcontent">
+                    
+                </div>
+
+                <div id="topten" class="tabcontent">
+                   
+                </div>
+
+            </div>
+            <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
+        </div>
+
+        <div class="panel panel-default panel-modal" id="usersPanel">
+            <div class="panel-heading"><h2>USERS ONLINE</h2></div>
+            <div class="panel-body"><ul class="list-group" id="list-g-users">
+                    <li class="list-group-item list-users">First item</li>
+                    <li class="list-group-item list-users">Second item</li>
+                    <li class="list-group-item list-users">Third item</li>
+                </ul></div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
         </div>
 
@@ -199,5 +231,16 @@
                 </div>
             </div>
         </div>
+        
+        <div class="panel panel-default panel-modal" id="endPanel">
+            <div class="panel-heading"><h2 id="hEnd">.</h2></div>
+            <div class="panel-body"><div class="well well-lg">
+                    <p id="pEnd"> . </p>
+                    <p> Your final score is <span id="scoreEnd"></span>. </p>
+                </div></div>
+            <div class="panel-footer"><button type="button" class="btn btn-default" id="playEnd">Play Again</button></div>
+        </div>
+        
+        
     </body>
 </html>

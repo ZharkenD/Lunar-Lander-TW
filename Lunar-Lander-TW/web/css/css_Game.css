@@ -1,5 +1,6 @@
 body,html{
     height:100%;
+    width: 100%;
     padding:0px;
     margin:0px;
     background: black;
@@ -19,6 +20,7 @@ body,html{
 
 .list-group{
     margin:0;
+
 }
 
 .list-group-item{
@@ -46,7 +48,14 @@ body,html{
     color:deepskyblue !important;
 }
 
-.d{background-color:pink;height:7%;width:100%;position:fixed;bottom:0px;}
+.d{background-color: #787878;
+   background-image: url("../img/LUN001.png");
+   background-size: 17%;
+   background-repeat: repeat-x;
+   height:7%;
+   width:100%;
+   position:fixed;
+   bottom:0px}
 
 #nave{text-align:center;position:fixed;top:23%;width:100%;height:20%;z-index:1;}
 #naveimg{height:100%}
@@ -59,6 +68,7 @@ body,html{
 .panel-modal{
     display:none;
     z-index: 2048;
+    min-width: 450px;
 }
 
 .panel-default {
@@ -117,7 +127,7 @@ body,html{
     background: linear-gradient(#990000, #660000);
 }
 .btn-return{
-        max-width: 250px;
+    max-width: 250px;
 }
 
 .well{
@@ -149,8 +159,8 @@ h3{
 }
 
 .btn-active,.btn-active:hover,.btn-active:focus{
-     background:linear-gradient(mediumblue,darkblue);
-     color:orangered;
+    background:linear-gradient(mediumblue,darkblue);
+    color:orangered;
 }
 
 #chooseOption{
@@ -162,8 +172,8 @@ h3{
 
 #chooseOption:hover,
 #chooseOption:focus {
-	color: #fff;
-	background: linear-gradient(#28a428, #004d00);
+    color: #fff;
+    background: linear-gradient(#28a428, #004d00);
 
 }
 
@@ -200,22 +210,78 @@ option{
     border-radius: 4px;
 }
 
-#okModal,#saveConfig{
+#okModal,#saveConfig,#playEnd{
     background: linear-gradient(limegreen,green);
-	outline: none;
-	color: #fff;
-	font-size: 14px;
-	height: auto;
-	font-weight: bold;
-	padding: 14px 0;
-	text-transform: uppercase;
-	border-color: mediumseagreen;
+    outline: none;
+    color: #fff;
+    font-size: 14px;
+    height: auto;
+    font-weight: bold;
+    padding: 14px 0;
+    text-transform: uppercase;
+    border-color: mediumseagreen;
 }
 
 #okModal:hover,
-#okModal:focus,#saveConfig:hover,#saveConfig:focus {
-	color: #fff;
-	background: linear-gradient(#28a428, #004d00);
+#okModal:focus,#saveConfig:hover,#saveConfig:focus,#playEnd:hover,#playEnd:focus  {
+    color: #fff;
+    background: linear-gradient(#28a428, #004d00);
+}
+
+#playEnd{
+    min-width: 250px;
+}
+
+#endPanel{
+    z-index:6;
+}
+
+.list-users{
+    border:0;
+    background-color: transparent;
+    color:deepskyblue;
+}
+
+#list-g-users{
+    background: linear-gradient(black, #00004d);
+    border: 1px solid #787878;
+    border-radius: 4px;
+}
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
 }
 
 /*CSS desktop*/
@@ -252,6 +318,16 @@ option{
     .pc{
         display:none !important;
     }
+    .d{
+        background-color: #787878;
+        background-image: url("../img/LUN001.png");
+        background-size: 55%;
+        background-repeat: repeat-x;
+        position:fixed;
+        bottom:0px;
+        height:7%;
+        width:100%
+    }
     .col-sm-4{
         height: auto;
         z-index:5;
@@ -267,27 +343,34 @@ option{
     #info_Panel{
         padding:5px 10px;
     }
-    .panel-modal{
-        width:100%;
-        min-height: 100%;
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+    /*   .panel-modal{
+            margin: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-height: 100%;
+        }*/
+
+
     #earth{
         margin-left: 45%;
         margin-top: 30%;
 
     }
-    
+
     button[disabled]{
         background-color: #404040;
     }
-    
+
     button[disabled]>.glyphicon{
         color:royalblue;
+    }
+    #endPanel{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     }
 
 }

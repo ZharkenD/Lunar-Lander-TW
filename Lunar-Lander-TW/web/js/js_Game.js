@@ -29,18 +29,22 @@ var instructionsVisible = false;
 var optionsVisible = false;//-----------------------------------------------------------------
 var configVisible = false;
 var rankingVisible = false;
+var usersVisible = false;
 var aboutVisible = false;
 var mobilePause = false;
-var mobileNav=false;
+var mobileNav = false;
 
 //Configuration
 var shipImg = "nave";
-var ahoraDif = "facil";
-var lugarAterrizaje = "luna";
-var isModifying=false;
+var shipNum = 0;
+var difNum = 0;
+var land = 0;
+var isModifying = false;
 
 var indexConfig = 0;
 var arrayConfig = [];
+
+var score = 0;
 
 
 $(document).ready(function () {
@@ -120,7 +124,7 @@ $(document).ready(function () {
             start();
             $("#instrctionPanel").hide();
             optionsVisible = false;
-        }else{
+        } else {
             stop();
             hideAll();
             $("#optionPanel").show();
@@ -142,6 +146,20 @@ $(document).ready(function () {
         }
     });
 
+    $("#usersNav").click(function () {
+        if (usersVisible) {
+            start();
+            $("#usersPanel").hide();
+            usersVisible = false;
+
+        } else {
+            stop();
+            hideAll();
+            $("#usersPanel").show();
+            usersVisible = true;
+        }
+    });
+
     $("#aboutNav").click(function () {
         if (aboutVisible) {
             start();
@@ -154,11 +172,14 @@ $(document).ready(function () {
             $("#aboutPanel").show();
             aboutVisible = true;
         }
-    });  
+    });
 
     $(".btn-return").click(function () {
         hideAll();
-        start();
+        if (!mobileNav) {
+            start();
+        }
+
     });
 
     /*PAUSE EVENTS*/
@@ -167,13 +188,13 @@ $(document).ready(function () {
         $("#pausePanel").hide();
         pauseVisible = false;
     });
-    
+
     $("#restartPause").click(function () {
         restart();
         $("#pausePanel").hide();
         pauseVisible = false;
     });
- 
+
     /*OPTIONS EVENTS*/
     $("#chooseOption").click(function () {
         cargarConfig();
@@ -181,68 +202,72 @@ $(document).ready(function () {
         motorOff();
         hideAll();
     });
-    
+
     $("#newConfigOption").click(function () {
         $("#optionPanel").hide();
-        $("#configurationPanel").modal({backdrop: "static", keyboard: "false"});      
+        $("#configurationPanel").modal({backdrop: "static", keyboard: "false"});
     });
-    
+
     $("#modifyConfigOption").click(function () {
         putDataConfig();
-        isModifying=true;
+        isModifying = true;
         $("#optionPanel").hide();
-        $("#configurationPanel").modal({backdrop: "static", keyboard: "false"});      
+        $("#configurationPanel").modal({backdrop: "static", keyboard: "false"});
     });
-    
+
     $("#deleteConfigOption").click(function () {
-        if(arrayConfig.length>1){
-            deleteConfig();  
-        }else{
+        if (arrayConfig.length > 1) {
+            deleteConfig();
+        } else {
             showAlert("You can't delete this configuration because you need to have at least one saved configuration.");
         }
-            
+
     });
-    
+
     /*CONFIGURATION EVENTS*/
     $("#saveConfig").click(function () {
         $("#configurationPanel").modal('hide');
         $("#optionPanel").show();
-        
+
     });
     $("#cancelConfig").click(function () {
         $("#configurationPanel").modal('hide');
         $("#optionPanel").show();
     });
-    
+
+
     /*MOBILE EVENTS*/
     $("#mobileRestart").click(function () {
+        $("#endPanel").hide();
         restart();
+        motorOff();
     });
-    
+
     $("#mobilePause").click(function () {
-            if (mobilePause) {
+
+        if (mobilePause) {
             start();
             mobilePause = false;
             $("#mobilePause").text("");
-    $("#mobilePause").append("<span class=\"glyphicon glyphicon-pause\"></span>");
+            $("#mobilePause").append("<span class=\"glyphicon glyphicon-pause\"></span>");
         } else {
             stop();
             hideAll();
             mobilePause = true;
             $("#mobilePause").text("");
             $("#mobilePause").append("<span class=\"glyphicon glyphicon-play\"></span>");
-        }        
+        }
     });
-    
-    
-    
+
+
+
     $("#mobileNav").click(function () {
         if (mobileNav) {
-            if(!mobilePause){
-            start();
-        }
+            if (!mobilePause) {
+                start();
+            }
             mobileNav = false;
-            $("#mobilePause").prop('disabled', false);         
+            $("#mobilePause").prop('disabled', false);
             $("#mobileRestart").prop('disabled', false);
             $(".navbar").css("min-height", "40px");
         } else {
@@ -257,8 +282,14 @@ $(document).ready(function () {
 
     //Empezar a mover la nave justo después de cargar la página ---------------------------------------------------
     start();
-    $("#okModal").click(function(){
+    $("#okModal").click(function () {
         $("#alertModal").modal('hide');
+    });
+
+    $("#playEnd").click(function () {
+        $("#endPanel").hide();
+        restart();
+        motorOff;
     });
 
 });
@@ -308,7 +339,8 @@ function moverNave() {
     if (y < (yStart - 30)) {
         endGame = true;
         isPause = true;
-        //mensajeSobreAltura();----------------------------------------------------------
+        score = 0;
+        messageEndGame("YOU FAIL", "Remember that we try TO LAND ¬¬", score);
         motorOff();
         stop();
     } else if (y < landing) {
@@ -316,7 +348,7 @@ function moverNave() {
     } else {
         altura.text(0);
         isPausa = true;
-        //comprobarAterrizaje();----------------------------------------------------------------------------
+        checkLanding();
         motorOff();
         stop();
     }
@@ -359,6 +391,36 @@ function actualizarFuel() {
     }
 
 }
+
+function checkLanding() {
+    endGame = true;
+    if (v > speedImpact) {
+        document.getElementById("naveimg").src = "img/explosion.png";
+        score = 0;
+        messageEndGame("YOU FAIL", "Maybe next time...", score);
+    } else {
+        document.getElementById("naveimg").src = "img/" + shipImg + ".png";
+        score = calculateScore();
+        messageEndGame("YOU WIN", "Congratulations!!! You're a great astronaut", score);
+    }
+}
+
+function messageEndGame(txt1, txt2, txt3) {
+    $("#endPanel").show();
+    $("#hEnd").text(txt1);
+    $("#pEnd").text(txt2);
+    $("#scoreEnd").text(txt3);
+    $("#mobilePause").prop('disabled', true);
+}
+
+function calculateScore() {
+    var fScore = 100 * actualFuel / fuelStart;
+    var vScore = (speedImpact - v) * 100 / speedImpact;
+    var difScore = 1 + (0.5 * difNum);
+    return ((fScore + vScore) * difScore).toFixed(2);
+
+}
+
 /*MENU*/
 function hideAll() {
     $("#pausePanel").hide();
@@ -366,18 +428,21 @@ function hideAll() {
     $("#optionPanel").hide();
     $("#configurationPanel").hide();
     $("#rankingPanel").hide();
+    $("#usersPanel").hide();
     $("#aboutPanel").hide();
     pauseVisible = false;
     instructionsVisible = false;
     optionsVisible = false;
     configVisible = false;
     rankingVisible = false;
+    usersVisible = false;
     aboutVisible = false;
 }
 
 function restart() {
     restartConfig();
     start();
+    $("#mobilePause").prop('disabled', false);
 }
 
 function restartConfig() {
@@ -409,7 +474,28 @@ function cargarConfig() {
 
 
 
-function showAlert(text){
+function showAlert(text) {
     $("#pModal").text(text);
     $("#alertModal").modal({backdrop: "static", keyboard: "false"});
+}
+
+function openTab(evt, tName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = $(".tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = $(".tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    $("#" + tName).show();
+    evt.currentTarget.className += " active";
 }
