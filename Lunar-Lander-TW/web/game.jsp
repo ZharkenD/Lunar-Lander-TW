@@ -101,9 +101,7 @@
                     <p>Please, choose your configuration</p>
                 </div>
                 <select class="form-control" id="selOptions">
-                    <option id="1">ddd</option>
-                    <option id="22">d2dd</option>
-                    <option id="333">d3dd</option>
+
                 </select>
                 <br>
                 <button type="button" class="btn btn-panel" id="chooseOption">Choose this configuration</button>

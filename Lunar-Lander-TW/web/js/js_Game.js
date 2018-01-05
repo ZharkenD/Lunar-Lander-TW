@@ -22,11 +22,11 @@ var altura = null;
 var combustible = null;
 
 //Menu controllers
-var isPause = false;//----------------------------------------------------------------y la de abajo
-var endGame = false;
+var isPause = true;
+var endGame = true;
 var pauseVisible = false;
 var instructionsVisible = false;
-var optionsVisible = false;//-----------------------------------------------------------------
+var optionsVisible = true;
 var configVisible = false;
 var rankingVisible = false;
 var usersVisible = false;
@@ -331,8 +331,6 @@ $(document).ready(function () {
         }
     });
 
-    //Empezar a mover la nave justo después de cargar la página ---------------------------------------------------
-    start();
     $("#okModal").click(function () {
         $("#alertModal").modal('hide');
     });
@@ -340,9 +338,11 @@ $(document).ready(function () {
     $("#playEnd").click(function () {
         $("#endPanel").hide();
         restart();
+        endGame=false;
         motorOff;
     });
-
+    
+    $("#optionPanel").show();
     loadUserConfig();
 
 });
@@ -352,6 +352,7 @@ $(document).ready(function () {
 //Definición de funciones
 function start() {
     isPause = false;
+    endGame=false;
     timer = setInterval(function () {
         moverNave();
     }, dt * 1000);
@@ -499,6 +500,7 @@ function hideAll() {
 function restart() {
     restartConfig();
     start();
+    motorOff();
     gameStart();
     $("#mobilePause").prop('disabled', false);
 }
@@ -530,7 +532,7 @@ function loadConfig() {
 /*CONFIGURATION*/
 function checkConfigName(txt) {
     if ($("#configName").val().length <= 0) {
-        showAlert("Please, introduce a name for the configuration");
+        showAlert("Please, enter a name for the configuration");
         return false;
     }
     for (var i = 0; i < arrayConfig.length; i++) {
@@ -628,7 +630,7 @@ function markLand(txt) {
 }
 
 /*POST AL SERVLET*/
-function loadConfigUser() {
+function loadUserConfig() {
     var url = "ConfigsUser";
     var emess = "Unknown error";
 
