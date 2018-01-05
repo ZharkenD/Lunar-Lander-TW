@@ -209,16 +209,29 @@ $(document).ready(function () {
     $("#newConfigOption").click(function () {
         $("#optionPanel").hide();
         $("#configurationPanel").modal({backdrop: "static", keyboard: "false"});
+        $("#configName").val("");
+        markLevel(0);
+        markShip(0);
+        markLand(0);
     });
 
     $("#modifyConfigOption").click(function () {
         isModifying = true;
         $("#optionPanel").hide();
         $("#configurationPanel").modal({backdrop: "static", keyboard: "false"});
+
+        var indexAux = $("#selOptions option:selected").index();
+        var idAux = document.getElementById("selOptions")[indexAux].id;
+
+        $("#configName").val(arrayConfig[idAux][0]);
+        markLevel(arrayConfig[idAux][1]);
+        markShip(arrayConfig[idAux][2]);
+        markLand(arrayConfig[idAux][3]);
     });
 
     $("#deleteConfigOption").click(function () {
-        if ($("#selOptions").length > 1) {
+        var auxLength = document.getElementById("selOptions").length;
+        if (auxLength > 1) {
             deleteConfig();
         } else {
             showAlert("You can't delete this configuration because you need to have at least one saved configuration.");
@@ -228,7 +241,11 @@ $(document).ready(function () {
 
     /*CONFIGURATION EVENTS*/
     $("#saveConfig").click(function () {
-        saveConfig();
+        if (!isModifying) {
+            saveConfig();
+        } else {
+            modifyConfig();
+        }
 
     });
     $("#cancelConfig").click(function () {
@@ -502,15 +519,17 @@ function loadConfig() {
 }
 
 /*CONFIGURATION*/
-function checkConfigName() {
+function checkConfigName(txt) {
     if ($("#configName").val().length <= 0) {
         showAlert("Please, introduce a name for the configuration");
         return false;
     }
     for (var i = 0; i < arrayConfig.length; i++) {
-        if ($("#configName").val() === arrayConfig[i][0]) {
-            showAlert("Configuration name is already chosen, please choose another");
-            return false;
+        if (!(arrayConfig[i][0] === txt)) {
+            if ($("#configName").val() === arrayConfig[i][0]) {
+                showAlert("Configuration name is already chosen, please choose another");
+                return false;
+            }
         }
     }
     return true;
@@ -633,7 +652,7 @@ function loadConfigUser() {
 }
 
 function saveConfig() {
-    if (checkConfigName()) {
+    if (checkConfigName("")) {
         var name = $("#nameConfig").val();
 
         var url = "ConfigsUser";
@@ -665,40 +684,72 @@ function saveConfig() {
 }
 
 function deleteConfig() {
-//     var indexAux = $("#selOptions option:selected").index().id;
-//     var iAux = $("#selOptions")[1].id;
-//     alert(indexAux);
-//     alert(iAux);
-     //$("#selectBox option[id='option1']").remove();
-//    if (checkConfigName()) {
-//        var name = $("#nameConfig").val();
-//
-//        var url = "ConfigsUser";
-//        var emess = "Unknown error";
-//
-//        $.ajax({
-//            method: "POST",
-//            url: url,
-//            data: {nameConfig: name, difConfig: difAux, nave: shipAux, lugar: landAux},
-//            success: function (u) {
-//                arrayConfig.push([name, difAux, shipAux, landAux]);
-//                $("#selOpciones").append("<option id=" + indexConfig + ">" + name + " (" + difAux +
-//                        ", " + shipAux + ", " + landAux + ")</option>");
-//                indexConfig++;
-//
-//                showAlert(u["mess"]);
-//                $("#configurationPanel").modal('hide');
-//                $("#optionPanel").show();
-//            },
-//            error: function (e) {
-//                if (e["responseJSON"] === undefined)
-//                    showAlert(emess);
-//                else
-//                    showAlert(e["responseJSON"]["error"]);
-//            }
-//        });
-//
-//    }
+    var indexAux = $("#selOptions option:selected").index();
+    var idAux = document.getElementById("selOptions")[indexAux].id;
+
+    var url = "DeleteConfigsUser";
+    var emess = "Unknown error";
+
+    var nameAux = arrayConfig[idAux][0];
+    var difiAux = arrayConfig[idAux][1];
+    var shAux = arrayConfig[idAux][2];
+    var lanAux = arrayConfig[idAux][3];
+
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: {nameConfig: nameAux, difConfig: difiAux, nave: shAux, lugar: lanAux},
+        success: function (u) {
+
+            showAlert(u["mess"]);
+
+            $("#selOptions option[id='" + idAux + "']").remove();
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
+}
+
+function modifyConfig() {
+    var indexAux = $("#selOptions option:selected").index();
+    var idAux = document.getElementById("selOptions")[indexAux].id;
+    if (checkConfigName(arrayConfig[idAux][0])) {
+        var name = $("#nameConfig").val();
+
+        var url = "ConfigsUser";
+        var emess = "Unknown error";
+
+        $.ajax({
+            method: "POST",
+            url: url,
+            data: {nameConfig: name, difConfig: difAux, nave: shipAux, lugar: landAux},
+            success: function (u) {
+                $("#selOptions option[id='" + idAux + "']").remove();
+                $("#selOpciones").append("<option id=" + idAux + ">" + name + " (" + difAux +
+                        ", " + shipAux + ", " + landAux + ")</option>");
+                arrayConfig[idAux][0]=name;
+                arrayConfig[idAux][1]=difAux;
+                arrayConfig[idAux][2]=shipAux;
+                arrayConfig[idAux][3]=landAux;
+
+                showAlert(u["mess"]);
+                isModifying = false;
+                $("#configurationPanel").modal('hide');
+                $("#optionPanel").show();
+            },
+            error: function (e) {
+                if (e["responseJSON"] === undefined)
+                    showAlert(emess);
+                else
+                    showAlert(e["responseJSON"]["error"]);
+            }
+        });
+    }
+
 }
 
 

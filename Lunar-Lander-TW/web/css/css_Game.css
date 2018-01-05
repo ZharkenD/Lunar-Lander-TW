@@ -248,6 +248,26 @@ option{
     border-radius: 4px;
 }
 
+#configName {
+	height: 45px;
+	border: 1px solid #787878;
+	font-size: 16px;
+        font-weight: bold;
+        background-color: black;
+        color: DeepSkyBlue ;
+	-webkit-transition: all 0.1s linear;
+	-moz-transition: all 0.1s linear;
+	transition: all 0.1s linear;
+}
+#configName:hover,
+#configName:focus {
+	outline:none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+        border-color:DeepSkyBlue;
+}
+
 /* Style the tab */
 .tab {
     overflow: hidden;

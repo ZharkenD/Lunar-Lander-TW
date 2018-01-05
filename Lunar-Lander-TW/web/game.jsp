@@ -102,8 +102,8 @@
                 </div>
                 <select class="form-control" id="selOptions">
                     <option id="1">ddd</option>
-                    <option id="2">d2dd</option>
-                    <option id="3">d3dd</option>
+                    <option id="22">d2dd</option>
+                    <option id="333">d3dd</option>
                 </select>
                 <br>
                 <button type="button" class="btn btn-panel" id="chooseOption">Choose this configuration</button>
@@ -242,7 +242,6 @@
                 </div></div>
             <div class="panel-footer"><button type="button" class="btn btn-default" id="playEnd">Play Again</button></div>
         </div>
-        
         
     </body>
 </html>
