@@ -393,6 +393,7 @@ function moverNave() {
         endGame = true;
         isPause = true;
         score = 0;
+        gameEnd(0, actualFuel, v);
         messageEndGame("YOU FAIL", "Remember that we try TO LAND ¬¬", score);
         motorOff();
         stop();
@@ -450,6 +451,7 @@ function checkLanding() {
     if (v > speedImpact) {
         document.getElementById("naveimg").src = "img/explosion.png";
         score = 0;
+        gameEnd(0, actualFuel, v);
         messageEndGame("YOU FAIL", "Maybe next time...", score);
     } else {
         document.getElementById("naveimg").src = "img/" + shipImg + ".png";
@@ -470,7 +472,9 @@ function calculateScore() {
     var fScore = 100 * actualFuel / fuelStart;
     var vScore = (speedImpact - v) * 100 / speedImpact;
     var difScore = 1 + difNum * (0.5 + (difNum - 1) * 0.25);
-    return ((fScore + vScore) * difScore).toFixed(2);
+    var total = ((fScore + vScore) * difScore).toFixed(2);
+    gameEnd(total, actualFuel, v);
+    return total;
 
 }
 
@@ -495,6 +499,7 @@ function hideAll() {
 function restart() {
     restartConfig();
     start();
+    gameStart();
     $("#mobilePause").prop('disabled', false);
 }
 
@@ -810,7 +815,7 @@ function loadMyBest() {
 
             $.each(jsn.config, function (i) {
 
-                $("#mybestbody").append("<tr><td>"+nameAux+"</td><td>"+anotherDif+"</td><td>"+scorAux+"</td></tr>");
+                $("#mybestbody").append("<tr><td>" + nameAux + "</td><td>" + anotherDif + "</td><td>" + scorAux + "</td></tr>");
 
             });
         },
@@ -840,7 +845,7 @@ function loadWorldBest() {
             $("#mybestbody").text("");
 
             $.each(jsn.config, function (i) {
-                $("#mybestbody").append("<tr><td>"+nameAux+"</td><td>"+anotherDif+"</td><td>"+scorAux+"</td></tr>");
+                $("#mybestbody").append("<tr><td>" + nameAux + "</td><td>" + anotherDif + "</td><td>" + scorAux + "</td></tr>");
             });
         },
         error: function (e) {
@@ -862,12 +867,12 @@ function loadTopTen() {
         success: function (jsn) {
             var nameAux = this.username;
             var gamesAux = this.numGames;
-           
+
 
             $("#mybestbody").text("");
 
             $.each(jsn.config, function (i) {
-                $("#mybestbody").append("<tr><td>"+nameAux+"</td><td>"+gamesAux+"</td></tr>");
+                $("#mybestbody").append("<tr><td>" + nameAux + "</td><td>" + gamesAux + "</td></tr>");
             });
         },
         error: function (e) {
@@ -877,6 +882,50 @@ function loadTopTen() {
                 showAlert(e["responseJSON"]["error"]);
         }
     });
+}
+
+function gameStart() {
+    var url = "Game";
+    var emess = "Unknown error";
+
+    var indexAux = $("#selOptions option:selected").index();
+    var idAux = document.getElementById("selOptions")[indexAux].id;
+
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: {nameConfig: arrayConfig[idAux][0]},
+        success: function (u) {
+
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
+}
+
+function gameEnd(scoreAct, fuelAct, vAct) {
+    var url = "Game";
+    var emess = "Unknown error";
+
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: {score: scoreAct, fuel: fuelAct, speed: vAct},
+        success: function (u) {
+
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
+
 }
 
 

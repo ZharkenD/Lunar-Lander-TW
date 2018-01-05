@@ -181,15 +181,53 @@
 
                 <!-- Tab content -->
                 <div id="mybest" class="tabcontent">
-                    
+                    <div class="container">           
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                   <th>Configuration Name</th>
+                                    <th>Difficult</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mybestbody">
+
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
 
                 <div id="worldbest" class="tabcontent">
-                    
+                    <div class="container">           
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Difficult</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody id="worldbestbody">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div id="topten" class="tabcontent">
-                   
+                    <div class="container">           
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Games Played</th>
+                                </tr>
+                            </thead>
+                            <tbody id="toptenbody">
+                                
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
             </div>
@@ -199,9 +237,6 @@
         <div class="panel panel-default panel-modal" id="usersPanel">
             <div class="panel-heading"><h2>USERS ONLINE</h2></div>
             <div class="panel-body"><ul class="list-group" id="list-g-users">
-                    <li class="list-group-item list-users">First item</li>
-                    <li class="list-group-item list-users">Second item</li>
-                    <li class="list-group-item list-users">Third item</li>
                 </ul></div>
             <div class="panel-footer"><button type="button" class="btn btn-default btn-return">Return</button></div>
         </div>
@@ -233,7 +268,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="panel panel-default panel-modal" id="endPanel">
             <div class="panel-heading"><h2 id="hEnd">.</h2></div>
             <div class="panel-body"><div class="well well-lg">
@@ -242,6 +277,6 @@
                 </div></div>
             <div class="panel-footer"><button type="button" class="btn btn-default" id="playEnd">Play Again</button></div>
         </div>
-        
+
     </body>
 </html>
