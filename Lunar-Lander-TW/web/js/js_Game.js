@@ -159,6 +159,7 @@ $(document).ready(function () {
             stop();
             hideAll();
             $("#usersPanel").show();
+            loadUsersOnline();
             usersVisible = true;
         }
     });
@@ -537,17 +538,17 @@ function checkConfigName(txt) {
 
 function selDif(txt) {
     switch (txt) {
-        case "facil":
+        case 0:
             fuelStart = 100;
             speedImpact = 5;
             difNum = 0;
             break;
-        case "medio":
+        case 1:
             fuelStart = 75;
             speedImpact = 2.5;
             difNum = 1;
             break;
-        case "dificil":
+        case 2:
             fuelStart = 50;
             speedImpact = 1;
             difNum = 2;
@@ -634,9 +635,14 @@ function loadConfigUser() {
                 var shAux = this.spaceshipId;
                 var lanAux = this.planetId;
                 arrayConfig.push([nameAux, difiAux, shAux, lanAux]);
+                
+                var anotherDif = (difiAux === 0) ? "Easy" : (difiAux === 1) ? "Medium" : "Hard";
+                var anotherShip = (shAux === 0) ? "Spaceship" : "UFO";
+                var anotherLand = (lanAux === 0) ? "Moon" : "Mars";
 
-                $("#selOpciones").append("<option id=" + indexConfig + ">" + nameAux + " (" + difiAux +
-                        ", " + shAux + ", " + lanAux + ")</option>");
+
+                $("#selOpciones").append("<option id=" + indexConfig + ">" + nameAux + " (" + anotherDif +
+                        ", " + anotherLand + ", " + lanAux + ")</option>");
 
                 indexConfig++;
 
@@ -661,7 +667,7 @@ function saveConfig() {
         $.ajax({
             method: "POST",
             url: url,
-            data: {nameConfig: name, difConfig: difAux, nave: shipAux, lugar: landAux},
+            data: {nameConfig: name, difConfig: difAux, shipConfig: shipAux, landConfig: landAux},
             success: function (u) {
                 arrayConfig.push([name, difAux, shipAux, landAux]);
                 $("#selOpciones").append("<option id=" + indexConfig + ">" + name + " (" + difAux +
@@ -698,7 +704,7 @@ function deleteConfig() {
     $.ajax({
         method: "POST",
         url: url,
-        data: {nameConfig: nameAux, difConfig: difiAux, nave: shAux, lugar: lanAux},
+        data: {nameConfig: nameAux, difConfig: difiAux, shipConfig: shAux, landConfig: lanAux},
         success: function (u) {
 
             showAlert(u["mess"]);
@@ -726,15 +732,21 @@ function modifyConfig() {
         $.ajax({
             method: "POST",
             url: url,
-            data: {nameConfig: name, difConfig: difAux, nave: shipAux, lugar: landAux},
+            data: {nameConfig: name, difConfig: difAux, shipConfig: shipAux, landConfig: landAux},
             success: function (u) {
-                $("#selOptions option[id='" + idAux + "']").remove();
-                $("#selOpciones").append("<option id=" + idAux + ">" + name + " (" + difAux +
-                        ", " + shipAux + ", " + landAux + ")</option>");
+                
                 arrayConfig[idAux][0]=name;
                 arrayConfig[idAux][1]=difAux;
                 arrayConfig[idAux][2]=shipAux;
                 arrayConfig[idAux][3]=landAux;
+                
+                var anotherDif = (difAux === 0) ? "Easy" : (difiAux === 1) ? "Medium" : "Hard";
+                var anotherShip = (shipAux === 0) ? "Spaceship" : "UFO";
+                var anotherLand = (landAux === 0) ? "Moon" : "Mars";
+                
+                $("#selOptions option[id='" + idAux + "']").remove();
+                $("#selOpciones").append("<option id=" + idAux + ">" + name + " (" + difAux +
+                        ", " + shipAux + ", " + landAux + ")</option>");
 
                 showAlert(u["mess"]);
                 isModifying = false;
@@ -750,6 +762,34 @@ function modifyConfig() {
         });
     }
 
+}
+
+function loadUsersOnline(){
+    var url = "UsersOnline";
+    var emess = "Unknown error";
+    
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        success: function (jsn) {
+        $("#list-g-users").text("");
+    
+            $.each(jsn.config, function (i) {
+
+                var nameAux = this.username;
+
+                $("#list-g-users").append("<li class=\"list-group-item list-users\">"+nameAux+"</li>");
+
+            });
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
 }
 
 
