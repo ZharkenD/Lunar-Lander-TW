@@ -38,7 +38,10 @@ var mobileNav = false;
 var shipImg = "nave";
 var shipNum = 0;
 var difNum = 0;
-var land = 0;
+var landNum = 0;
+var shipAux = 0;
+var difAux = 0;
+var landAux = 0;
 var isModifying = false;
 
 var indexConfig = 0;
@@ -226,6 +229,7 @@ $(document).ready(function () {
 
     /*CONFIGURATION EVENTS*/
     $("#saveConfig").click(function () {
+        saveConfig();
         $("#configurationPanel").modal('hide');
         $("#optionPanel").show();
 
@@ -233,6 +237,34 @@ $(document).ready(function () {
     $("#cancelConfig").click(function () {
         $("#configurationPanel").modal('hide');
         $("#optionPanel").show();
+    });
+
+    $("#easyConfig").click(function () {
+        markLevel(0);
+    });
+
+    $("#mediumConfig").click(function () {
+        markLevel(1);
+    });
+
+    $("#hardConfig").click(function () {
+        markLevel(2);
+    });
+
+    $("#standardConfig").click(function () {
+        markShip(0);
+    });
+
+    $("#ufoConfig").click(function () {
+        markShip(1);
+    });
+
+    $("#moonConfig").click(function () {
+        markLand(0);
+    });
+
+    $("#marsConfig").click(function () {
+        markLand(1);
     });
 
 
@@ -416,7 +448,7 @@ function messageEndGame(txt1, txt2, txt3) {
 function calculateScore() {
     var fScore = 100 * actualFuel / fuelStart;
     var vScore = (speedImpact - v) * 100 / speedImpact;
-    var difScore = 1 + (0.5 * difNum);
+    var difScore = 1 + difNum*(0.5 +(difNum-1)*0.25);
     return ((fScore + vScore) * difScore).toFixed(2);
 
 }
@@ -464,16 +496,92 @@ function restartConfig() {
 /*OPTIONS*/
 function cargarConfig() {
     var indexAux = $("#selOptions option:selected").index();
-    seleccionarDif(arrayConfig[indexAux][1]);
-    seleccionarNave(arrayConfig[indexAux][2]);
-    seleccionarLugar(arrayConfig[indexAux][3]);
+    selDif(arrayConfig[indexAux][1]);
+    selShip(arrayConfig[indexAux][2]);
+    selLand(arrayConfig[indexAux][3]);
 }
 
 /*CONFIGURATION*/
+function selDif(txt) {
+var msj = "";
+    switch (txt) {
+        case "facil":
+            fuelStart = 100;
+            speedImpact = 5;
+            difNum=0;
+            break;
+        case "medio":
+            fuelStart = 75;
+            speedImpact = 2.5;
+            difNum=0;
+            break;
+        case "dificil":
+            fuelStart = 50;
+            speedImpact = 1;
+            difNum=0;
+            break;
+    }
+
+    restartConfig();
+}
+
+function selShip(txt) {
+
+}
+
+function selLand(txt) {
+
+}
+
+function markLevel(txt) {
+    var msj = "";
+    $("#easyConfig").removeClass('btn-active');
+    $("#mediumConfig").removeClass('btn-active');
+    $("#hardConfig").removeClass('btn-active');
+    if (txt === 0) {
+        $("#easyConfig").addClass('btn-active');
+        msj="EASY: You have 100 liters of fuel and you must land less than 5 m/s.";
+        difAux = 0;
+    } else if (txt === 1) {
+        $("#mediumConfig").addClass('btn-active');
+        msj="MEDIUM: You have 75 liters of fuel and you must land less than 2,5 m/s.";
+        difAux = 1;
+    } else if (txt === 2) {
+        $("#hardConfig").addClass('btn-active');
+        msj="HARD: You have 50 liters of fuel and you must land less than 1 m/s.";
+        difAux = 2;
+    }
+    $("#infoLevel").text(msj);
+}
+
+function markShip(txt) {
+    $("#standardConfig").removeClass('btn-active');
+    $("#ufoConfig").removeClass('btn-active');
+    if (txt === 0) {
+        $("#standardConfig").addClass('btn-active');
+        shipAux = 0;
+
+    } else if (txt === 1) {
+        $("#ufoConfig").addClass('btn-active');
+        shipAux = 1;
+
+    }
+}
+
+function markLand(txt) {
+    $("#moonConfig").removeClass('btn-active');
+    $("#marsConfig").removeClass('btn-active');
+    if (txt === 0) {
+        $("#moonConfig").addClass('btn-active');
+        landAux=0;
+    } else if (txt === 1) {
+        $("#marsConfig").addClass('btn-active');
+        landAux=1;
+    }
+}
 
 
-
-
+/*OTHERS*/
 function showAlert(text) {
     $("#pModal").text(text);
     $("#alertModal").modal({backdrop: "static", keyboard: "false"});

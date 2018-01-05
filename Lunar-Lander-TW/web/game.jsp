@@ -134,7 +134,7 @@
                     </div>
                 </div>
                 <div class="well well-sm">
-                    <p id="infoLevel">.</p>
+                    <p id="infoLevel">EASY: You have 100 liters of fuel and you must land less than 5 m/s.</p>
                 </div>
                 <h3>Spaceship</h3>
                 <div class="btn-group btn-group-justified">
