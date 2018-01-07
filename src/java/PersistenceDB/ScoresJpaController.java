@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package PersistenceDB;
 
 import PersistenceDB.exceptions.NonexistentEntityException;
@@ -10,6 +15,10 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+/**
+ *
+ * @author cdore
+ */
 public class ScoresJpaController implements Serializable {
 
     public ScoresJpaController(EntityManagerFactory emf) {
@@ -33,7 +42,7 @@ public class ScoresJpaController implements Serializable {
             }
             em.persist(scores);
             if (confId != null) {
-                confId.getScoresCollection().add(scores);
+                confId.getScoresList().add(scores);
                 confId = em.merge(confId);
             }
             em.getTransaction().commit();
@@ -58,11 +67,11 @@ public class ScoresJpaController implements Serializable {
             }
             scores = em.merge(scores);
             if (confIdOld != null && !confIdOld.equals(confIdNew)) {
-                confIdOld.getScoresCollection().remove(scores);
+                confIdOld.getScoresList().remove(scores);
                 confIdOld = em.merge(confIdOld);
             }
             if (confIdNew != null && !confIdNew.equals(confIdOld)) {
-                confIdNew.getScoresCollection().add(scores);
+                confIdNew.getScoresList().add(scores);
                 confIdNew = em.merge(confIdNew);
             }
             em.getTransaction().commit();
@@ -96,7 +105,7 @@ public class ScoresJpaController implements Serializable {
             }
             Configurations confId = scores.getConfId();
             if (confId != null) {
-                confId.getScoresCollection().remove(scores);
+                confId.getScoresList().remove(scores);
                 confId = em.merge(confId);
             }
             em.remove(scores);

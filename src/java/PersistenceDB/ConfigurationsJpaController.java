@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package PersistenceDB;
 
 import PersistenceDB.exceptions.NonexistentEntityException;
@@ -7,12 +12,14 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
 
+/**
+ *
+ * @author cdore
+ */
 public class ConfigurationsJpaController implements Serializable {
 
     public ConfigurationsJpaController(EntityManagerFactory emf) {
@@ -25,8 +32,8 @@ public class ConfigurationsJpaController implements Serializable {
     }
 
     public void create(Configurations configurations) {
-        if (configurations.getScoresCollection() == null) {
-            configurations.setScoresCollection(new ArrayList<Scores>());
+        if (configurations.getScoresList() == null) {
+            configurations.setScoresList(new ArrayList<Scores>());
         }
         EntityManager em = null;
         try {
@@ -37,24 +44,24 @@ public class ConfigurationsJpaController implements Serializable {
                 userId = em.getReference(userId.getClass(), userId.getId());
                 configurations.setUserId(userId);
             }
-            Collection<Scores> attachedScoresCollection = new ArrayList<Scores>();
-            for (Scores scoresCollectionScoresToAttach : configurations.getScoresCollection()) {
-                scoresCollectionScoresToAttach = em.getReference(scoresCollectionScoresToAttach.getClass(), scoresCollectionScoresToAttach.getId());
-                attachedScoresCollection.add(scoresCollectionScoresToAttach);
+            List<Scores> attachedScoresList = new ArrayList<Scores>();
+            for (Scores scoresListScoresToAttach : configurations.getScoresList()) {
+                scoresListScoresToAttach = em.getReference(scoresListScoresToAttach.getClass(), scoresListScoresToAttach.getId());
+                attachedScoresList.add(scoresListScoresToAttach);
             }
-            configurations.setScoresCollection(attachedScoresCollection);
+            configurations.setScoresList(attachedScoresList);
             em.persist(configurations);
             if (userId != null) {
-                userId.getConfigurationsCollection().add(configurations);
+                userId.getConfigurationsList().add(configurations);
                 userId = em.merge(userId);
             }
-            for (Scores scoresCollectionScores : configurations.getScoresCollection()) {
-                Configurations oldConfIdOfScoresCollectionScores = scoresCollectionScores.getConfId();
-                scoresCollectionScores.setConfId(configurations);
-                scoresCollectionScores = em.merge(scoresCollectionScores);
-                if (oldConfIdOfScoresCollectionScores != null) {
-                    oldConfIdOfScoresCollectionScores.getScoresCollection().remove(scoresCollectionScores);
-                    oldConfIdOfScoresCollectionScores = em.merge(oldConfIdOfScoresCollectionScores);
+            for (Scores scoresListScores : configurations.getScoresList()) {
+                Configurations oldConfIdOfScoresListScores = scoresListScores.getConfId();
+                scoresListScores.setConfId(configurations);
+                scoresListScores = em.merge(scoresListScores);
+                if (oldConfIdOfScoresListScores != null) {
+                    oldConfIdOfScoresListScores.getScoresList().remove(scoresListScores);
+                    oldConfIdOfScoresListScores = em.merge(oldConfIdOfScoresListScores);
                 }
             }
             em.getTransaction().commit();
@@ -73,42 +80,42 @@ public class ConfigurationsJpaController implements Serializable {
             Configurations persistentConfigurations = em.find(Configurations.class, configurations.getId());
             Users userIdOld = persistentConfigurations.getUserId();
             Users userIdNew = configurations.getUserId();
-            Collection<Scores> scoresCollectionOld = persistentConfigurations.getScoresCollection();
-            Collection<Scores> scoresCollectionNew = configurations.getScoresCollection();
+            List<Scores> scoresListOld = persistentConfigurations.getScoresList();
+            List<Scores> scoresListNew = configurations.getScoresList();
             if (userIdNew != null) {
                 userIdNew = em.getReference(userIdNew.getClass(), userIdNew.getId());
                 configurations.setUserId(userIdNew);
             }
-            Collection<Scores> attachedScoresCollectionNew = new ArrayList<Scores>();
-            for (Scores scoresCollectionNewScoresToAttach : scoresCollectionNew) {
-                scoresCollectionNewScoresToAttach = em.getReference(scoresCollectionNewScoresToAttach.getClass(), scoresCollectionNewScoresToAttach.getId());
-                attachedScoresCollectionNew.add(scoresCollectionNewScoresToAttach);
+            List<Scores> attachedScoresListNew = new ArrayList<Scores>();
+            for (Scores scoresListNewScoresToAttach : scoresListNew) {
+                scoresListNewScoresToAttach = em.getReference(scoresListNewScoresToAttach.getClass(), scoresListNewScoresToAttach.getId());
+                attachedScoresListNew.add(scoresListNewScoresToAttach);
             }
-            scoresCollectionNew = attachedScoresCollectionNew;
-            configurations.setScoresCollection(scoresCollectionNew);
+            scoresListNew = attachedScoresListNew;
+            configurations.setScoresList(scoresListNew);
             configurations = em.merge(configurations);
             if (userIdOld != null && !userIdOld.equals(userIdNew)) {
-                userIdOld.getConfigurationsCollection().remove(configurations);
+                userIdOld.getConfigurationsList().remove(configurations);
                 userIdOld = em.merge(userIdOld);
             }
             if (userIdNew != null && !userIdNew.equals(userIdOld)) {
-                userIdNew.getConfigurationsCollection().add(configurations);
+                userIdNew.getConfigurationsList().add(configurations);
                 userIdNew = em.merge(userIdNew);
             }
-            for (Scores scoresCollectionOldScores : scoresCollectionOld) {
-                if (!scoresCollectionNew.contains(scoresCollectionOldScores)) {
-                    scoresCollectionOldScores.setConfId(null);
-                    scoresCollectionOldScores = em.merge(scoresCollectionOldScores);
+            for (Scores scoresListOldScores : scoresListOld) {
+                if (!scoresListNew.contains(scoresListOldScores)) {
+                    scoresListOldScores.setConfId(null);
+                    scoresListOldScores = em.merge(scoresListOldScores);
                 }
             }
-            for (Scores scoresCollectionNewScores : scoresCollectionNew) {
-                if (!scoresCollectionOld.contains(scoresCollectionNewScores)) {
-                    Configurations oldConfIdOfScoresCollectionNewScores = scoresCollectionNewScores.getConfId();
-                    scoresCollectionNewScores.setConfId(configurations);
-                    scoresCollectionNewScores = em.merge(scoresCollectionNewScores);
-                    if (oldConfIdOfScoresCollectionNewScores != null && !oldConfIdOfScoresCollectionNewScores.equals(configurations)) {
-                        oldConfIdOfScoresCollectionNewScores.getScoresCollection().remove(scoresCollectionNewScores);
-                        oldConfIdOfScoresCollectionNewScores = em.merge(oldConfIdOfScoresCollectionNewScores);
+            for (Scores scoresListNewScores : scoresListNew) {
+                if (!scoresListOld.contains(scoresListNewScores)) {
+                    Configurations oldConfIdOfScoresListNewScores = scoresListNewScores.getConfId();
+                    scoresListNewScores.setConfId(configurations);
+                    scoresListNewScores = em.merge(scoresListNewScores);
+                    if (oldConfIdOfScoresListNewScores != null && !oldConfIdOfScoresListNewScores.equals(configurations)) {
+                        oldConfIdOfScoresListNewScores.getScoresList().remove(scoresListNewScores);
+                        oldConfIdOfScoresListNewScores = em.merge(oldConfIdOfScoresListNewScores);
                     }
                 }
             }
@@ -143,13 +150,13 @@ public class ConfigurationsJpaController implements Serializable {
             }
             Users userId = configurations.getUserId();
             if (userId != null) {
-                userId.getConfigurationsCollection().remove(configurations);
+                userId.getConfigurationsList().remove(configurations);
                 userId = em.merge(userId);
             }
-            Collection<Scores> scoresCollection = configurations.getScoresCollection();
-            for (Scores scoresCollectionScores : scoresCollection) {
-                scoresCollectionScores.setConfId(null);
-                scoresCollectionScores = em.merge(scoresCollectionScores);
+            List<Scores> scoresList = configurations.getScoresList();
+            for (Scores scoresListScores : scoresList) {
+                scoresListScores.setConfId(null);
+                scoresListScores = em.merge(scoresListScores);
             }
             em.remove(configurations);
             em.getTransaction().commit();
@@ -201,18 +208,6 @@ public class ConfigurationsJpaController implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
-    }
-    
-    
-        public Users findUser(String username) {
-        EntityManager em = getEntityManager();
-        try {
-            return (Users) em.createNamedQuery("Users.findByUsername").setParameter("username", username).getSingleResult();
-        } catch (NoResultException e) {
-            return null;
         } finally {
             em.close();
         }

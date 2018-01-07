@@ -5,8 +5,9 @@
  */
 package PersistenceDB;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,19 +45,25 @@ public class Configurations implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
+    @Expose(serialize = false)
     private Integer id;
+    @Expose
     @Column(name = "configure_name")
     private String configureName;
+    @Expose
     @Column(name = "diff_id")
     private Integer diffId;
+    @Expose
     @Column(name = "spaceship_id")
     private Integer spaceshipId;
+    @Expose
     @Column(name = "planet_id")
     private Integer planetId;
     @OneToMany(mappedBy = "confId", fetch = FetchType.LAZY)
-    private Collection<Scores> scoresCollection;
+    private List<Scores> scoresList;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @Expose(serialize = false)
     private Users userId;
 
     public Configurations() {
@@ -107,12 +114,12 @@ public class Configurations implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Scores> getScoresCollection() {
-        return scoresCollection;
+    public List<Scores> getScoresList() {
+        return scoresList;
     }
 
-    public void setScoresCollection(Collection<Scores> scoresCollection) {
-        this.scoresCollection = scoresCollection;
+    public void setScoresList(List<Scores> scoresList) {
+        this.scoresList = scoresList;
     }
 
     public Users getUserId() {
@@ -147,5 +154,5 @@ public class Configurations implements Serializable {
     public String toString() {
         return "PersistenceDB.Configurations[ id=" + id + " ]";
     }
-    
+
 }

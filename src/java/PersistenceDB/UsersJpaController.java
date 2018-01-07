@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package PersistenceDB;
 
 import PersistenceDB.exceptions.NonexistentEntityException;
@@ -7,12 +12,15 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 
+/**
+ *
+ * @author cdore
+ */
 public class UsersJpaController implements Serializable {
 
     public UsersJpaController(EntityManagerFactory emf) {
@@ -25,27 +33,27 @@ public class UsersJpaController implements Serializable {
     }
 
     public void create(Users users) {
-        if (users.getConfigurationsCollection() == null) {
-            users.setConfigurationsCollection(new ArrayList<Configurations>());
+        if (users.getConfigurationsList() == null) {
+            users.setConfigurationsList(new ArrayList<Configurations>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<Configurations> attachedConfigurationsCollection = new ArrayList<Configurations>();
-            for (Configurations configurationsCollectionConfigurationsToAttach : users.getConfigurationsCollection()) {
-                configurationsCollectionConfigurationsToAttach = em.getReference(configurationsCollectionConfigurationsToAttach.getClass(), configurationsCollectionConfigurationsToAttach.getId());
-                attachedConfigurationsCollection.add(configurationsCollectionConfigurationsToAttach);
+            List<Configurations> attachedConfigurationsList = new ArrayList<Configurations>();
+            for (Configurations configurationsListConfigurationsToAttach : users.getConfigurationsList()) {
+                configurationsListConfigurationsToAttach = em.getReference(configurationsListConfigurationsToAttach.getClass(), configurationsListConfigurationsToAttach.getId());
+                attachedConfigurationsList.add(configurationsListConfigurationsToAttach);
             }
-            users.setConfigurationsCollection(attachedConfigurationsCollection);
+            users.setConfigurationsList(attachedConfigurationsList);
             em.persist(users);
-            for (Configurations configurationsCollectionConfigurations : users.getConfigurationsCollection()) {
-                Users oldUserIdOfConfigurationsCollectionConfigurations = configurationsCollectionConfigurations.getUserId();
-                configurationsCollectionConfigurations.setUserId(users);
-                configurationsCollectionConfigurations = em.merge(configurationsCollectionConfigurations);
-                if (oldUserIdOfConfigurationsCollectionConfigurations != null) {
-                    oldUserIdOfConfigurationsCollectionConfigurations.getConfigurationsCollection().remove(configurationsCollectionConfigurations);
-                    oldUserIdOfConfigurationsCollectionConfigurations = em.merge(oldUserIdOfConfigurationsCollectionConfigurations);
+            for (Configurations configurationsListConfigurations : users.getConfigurationsList()) {
+                Users oldUserIdOfConfigurationsListConfigurations = configurationsListConfigurations.getUserId();
+                configurationsListConfigurations.setUserId(users);
+                configurationsListConfigurations = em.merge(configurationsListConfigurations);
+                if (oldUserIdOfConfigurationsListConfigurations != null) {
+                    oldUserIdOfConfigurationsListConfigurations.getConfigurationsList().remove(configurationsListConfigurations);
+                    oldUserIdOfConfigurationsListConfigurations = em.merge(oldUserIdOfConfigurationsListConfigurations);
                 }
             }
             em.getTransaction().commit();
@@ -62,30 +70,30 @@ public class UsersJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Users persistentUsers = em.find(Users.class, users.getId());
-            Collection<Configurations> configurationsCollectionOld = persistentUsers.getConfigurationsCollection();
-            Collection<Configurations> configurationsCollectionNew = users.getConfigurationsCollection();
-            Collection<Configurations> attachedConfigurationsCollectionNew = new ArrayList<Configurations>();
-            for (Configurations configurationsCollectionNewConfigurationsToAttach : configurationsCollectionNew) {
-                configurationsCollectionNewConfigurationsToAttach = em.getReference(configurationsCollectionNewConfigurationsToAttach.getClass(), configurationsCollectionNewConfigurationsToAttach.getId());
-                attachedConfigurationsCollectionNew.add(configurationsCollectionNewConfigurationsToAttach);
+            List<Configurations> configurationsListOld = persistentUsers.getConfigurationsList();
+            List<Configurations> configurationsListNew = users.getConfigurationsList();
+            List<Configurations> attachedConfigurationsListNew = new ArrayList<Configurations>();
+            for (Configurations configurationsListNewConfigurationsToAttach : configurationsListNew) {
+                configurationsListNewConfigurationsToAttach = em.getReference(configurationsListNewConfigurationsToAttach.getClass(), configurationsListNewConfigurationsToAttach.getId());
+                attachedConfigurationsListNew.add(configurationsListNewConfigurationsToAttach);
             }
-            configurationsCollectionNew = attachedConfigurationsCollectionNew;
-            users.setConfigurationsCollection(configurationsCollectionNew);
+            configurationsListNew = attachedConfigurationsListNew;
+            users.setConfigurationsList(configurationsListNew);
             users = em.merge(users);
-            for (Configurations configurationsCollectionOldConfigurations : configurationsCollectionOld) {
-                if (!configurationsCollectionNew.contains(configurationsCollectionOldConfigurations)) {
-                    configurationsCollectionOldConfigurations.setUserId(null);
-                    configurationsCollectionOldConfigurations = em.merge(configurationsCollectionOldConfigurations);
+            for (Configurations configurationsListOldConfigurations : configurationsListOld) {
+                if (!configurationsListNew.contains(configurationsListOldConfigurations)) {
+                    configurationsListOldConfigurations.setUserId(null);
+                    configurationsListOldConfigurations = em.merge(configurationsListOldConfigurations);
                 }
             }
-            for (Configurations configurationsCollectionNewConfigurations : configurationsCollectionNew) {
-                if (!configurationsCollectionOld.contains(configurationsCollectionNewConfigurations)) {
-                    Users oldUserIdOfConfigurationsCollectionNewConfigurations = configurationsCollectionNewConfigurations.getUserId();
-                    configurationsCollectionNewConfigurations.setUserId(users);
-                    configurationsCollectionNewConfigurations = em.merge(configurationsCollectionNewConfigurations);
-                    if (oldUserIdOfConfigurationsCollectionNewConfigurations != null && !oldUserIdOfConfigurationsCollectionNewConfigurations.equals(users)) {
-                        oldUserIdOfConfigurationsCollectionNewConfigurations.getConfigurationsCollection().remove(configurationsCollectionNewConfigurations);
-                        oldUserIdOfConfigurationsCollectionNewConfigurations = em.merge(oldUserIdOfConfigurationsCollectionNewConfigurations);
+            for (Configurations configurationsListNewConfigurations : configurationsListNew) {
+                if (!configurationsListOld.contains(configurationsListNewConfigurations)) {
+                    Users oldUserIdOfConfigurationsListNewConfigurations = configurationsListNewConfigurations.getUserId();
+                    configurationsListNewConfigurations.setUserId(users);
+                    configurationsListNewConfigurations = em.merge(configurationsListNewConfigurations);
+                    if (oldUserIdOfConfigurationsListNewConfigurations != null && !oldUserIdOfConfigurationsListNewConfigurations.equals(users)) {
+                        oldUserIdOfConfigurationsListNewConfigurations.getConfigurationsList().remove(configurationsListNewConfigurations);
+                        oldUserIdOfConfigurationsListNewConfigurations = em.merge(oldUserIdOfConfigurationsListNewConfigurations);
                     }
                 }
             }
@@ -118,10 +126,10 @@ public class UsersJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The users with id " + id + " no longer exists.", enfe);
             }
-            Collection<Configurations> configurationsCollection = users.getConfigurationsCollection();
-            for (Configurations configurationsCollectionConfigurations : configurationsCollection) {
-                configurationsCollectionConfigurations.setUserId(null);
-                configurationsCollectionConfigurations = em.merge(configurationsCollectionConfigurations);
+            List<Configurations> configurationsList = users.getConfigurationsList();
+            for (Configurations configurationsListConfigurations : configurationsList) {
+                configurationsListConfigurations.setUserId(null);
+                configurationsListConfigurations = em.merge(configurationsListConfigurations);
             }
             em.remove(users);
             em.getTransaction().commit();
@@ -212,7 +220,7 @@ public class UsersJpaController implements Serializable {
     }
 
     /**
-     *  Check if the username exists
+     * Check if the username exists
      *
      * @param username
      * @return If you find an username, return it does not return null
