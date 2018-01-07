@@ -22,11 +22,11 @@ var altura = null;
 var combustible = null;
 
 //Menu controllers
-var isPause = false;//----------------------------------------------------------------y la de abajo
-var endGame = false;
+var isPause = true;
+var endGame = true;
 var pauseVisible = false;
 var instructionsVisible = false;
-var optionsVisible = false;//-----------------------------------------------------------------
+var optionsVisible = true;
 var configVisible = false;
 var rankingVisible = false;
 var usersVisible = false;
@@ -204,7 +204,7 @@ $(document).ready(function () {
 
     /*OPTIONS EVENTS*/
     $("#chooseOption").click(function () {
-        cargarConfig();
+        loadConfig();
         restart();
         motorOff();
         hideAll();
@@ -331,8 +331,6 @@ $(document).ready(function () {
         }
     });
 
-    //Empezar a mover la nave justo después de cargar la página ---------------------------------------------------
-    start();
     $("#okModal").click(function () {
         $("#alertModal").modal('hide');
     });
@@ -340,9 +338,11 @@ $(document).ready(function () {
     $("#playEnd").click(function () {
         $("#endPanel").hide();
         restart();
+        endGame = false;
         motorOff;
     });
 
+    $("#optionPanel").show();
     loadUserConfig();
 
 });
@@ -352,6 +352,7 @@ $(document).ready(function () {
 //Definición de funciones
 function start() {
     isPause = false;
+    endGame = false;
     timer = setInterval(function () {
         moverNave();
     }, dt * 1000);
@@ -393,6 +394,7 @@ function moverNave() {
         endGame = true;
         isPause = true;
         score = 0;
+        gameEnd(0, actualFuel, v);
         messageEndGame("YOU FAIL", "Remember that we try TO LAND ¬¬", score);
         motorOff();
         stop();
@@ -450,6 +452,7 @@ function checkLanding() {
     if (v > speedImpact) {
         document.getElementById("naveimg").src = "img/explosion.png";
         score = 0;
+        gameEnd(0, actualFuel, v);
         messageEndGame("YOU FAIL", "Maybe next time...", score);
     } else {
         document.getElementById("naveimg").src = "img/" + shipImg + ".png";
@@ -470,7 +473,9 @@ function calculateScore() {
     var fScore = 100 * actualFuel / fuelStart;
     var vScore = (speedImpact - v) * 100 / speedImpact;
     var difScore = 1 + difNum * (0.5 + (difNum - 1) * 0.25);
-    return ((fScore + vScore) * difScore).toFixed(2);
+    var total = ((fScore + vScore) * difScore).toFixed(2);
+    gameEnd(total, actualFuel, v);
+    return total;
 
 }
 
@@ -495,12 +500,14 @@ function hideAll() {
 function restart() {
     restartConfig();
     start();
+    motorOff();
+    gameStart();
     $("#mobilePause").prop('disabled', false);
 }
 
 function restartConfig() {
     y = yStart;
-    fuel = fuelStart;
+    actualFuel = fuelStart;
     v = 0;
     isFuel = true;
     endGame = false;
@@ -510,7 +517,7 @@ function restartConfig() {
     timerFuel = null;
 
     combustible.css("color", "lime");
-    combustible.text(fuel.toFixed());
+    combustible.text(actualFuel.toFixed());
     document.getElementById("naveimg").src = "img/" + shipImg + ".png";
 }
 
@@ -525,7 +532,7 @@ function loadConfig() {
 /*CONFIGURATION*/
 function checkConfigName(txt) {
     if ($("#configName").val().length <= 0) {
-        showAlert("Please, introduce a name for the configuration");
+        showAlert("Please, enter a name for the configuration");
         return false;
     }
     for (var i = 0; i < arrayConfig.length; i++) {
@@ -623,15 +630,15 @@ function markLand(txt) {
 }
 
 /*POST AL SERVLET*/
-function loadConfigUser() {
-    var url = "ConfigsUser";
+function loadUserConfig() {
+    var url = "ConfigLoader";
     var emess = "Unknown error";
 
     $.ajax({
         url: url,
         dataType: 'json',
         success: function (jsn) {
-            $.each(jsn.config, function (i) {
+            $.each(jsn, function () {
 
                 var nameAux = this.configureName;
                 var difiAux = this.diffId;
@@ -643,9 +650,8 @@ function loadConfigUser() {
                 var anotherShip = (shAux === 0) ? "Spaceship" : "UFO";
                 var anotherLand = (lanAux === 0) ? "Moon" : "Mars";
 
-
-                $("#selOpciones").append("<option id=" + indexConfig + ">" + nameAux + " (" + anotherDif +
-                        ", " + anotherLand + ", " + lanAux + ")</option>");
+                $("#selOptions").append("<option id=" + indexConfig + ">" + nameAux + " (" + anotherDif +
+                        ", " + anotherShip + ", " + anotherLand + ")</option>");
 
                 indexConfig++;
 
@@ -662,9 +668,9 @@ function loadConfigUser() {
 
 function saveConfig() {
     if (checkConfigName("")) {
-        var name = $("#nameConfig").val();
+        var name = $("#configName").val();
 
-        var url = "ConfigsUser";
+        var url = "ConfigLoader";
         var emess = "Unknown error";
 
         $.ajax({
@@ -810,7 +816,7 @@ function loadMyBest() {
 
             $.each(jsn.config, function (i) {
 
-                $("#mybestbody").append("<tr><td>"+nameAux+"</td><td>"+anotherDif+"</td><td>"+scorAux+"</td></tr>");
+                $("#mybestbody").append("<tr><td>" + nameAux + "</td><td>" + anotherDif + "</td><td>" + scorAux + "</td></tr>");
 
             });
         },
@@ -840,7 +846,7 @@ function loadWorldBest() {
             $("#mybestbody").text("");
 
             $.each(jsn.config, function (i) {
-                $("#mybestbody").append("<tr><td>"+nameAux+"</td><td>"+anotherDif+"</td><td>"+scorAux+"</td></tr>");
+                $("#mybestbody").append("<tr><td>" + nameAux + "</td><td>" + anotherDif + "</td><td>" + scorAux + "</td></tr>");
             });
         },
         error: function (e) {
@@ -862,12 +868,12 @@ function loadTopTen() {
         success: function (jsn) {
             var nameAux = this.username;
             var gamesAux = this.numGames;
-           
+
 
             $("#mybestbody").text("");
 
             $.each(jsn.config, function (i) {
-                $("#mybestbody").append("<tr><td>"+nameAux+"</td><td>"+gamesAux+"</td></tr>");
+                $("#mybestbody").append("<tr><td>" + nameAux + "</td><td>" + gamesAux + "</td></tr>");
             });
         },
         error: function (e) {
@@ -877,6 +883,50 @@ function loadTopTen() {
                 showAlert(e["responseJSON"]["error"]);
         }
     });
+}
+
+function gameStart() {
+    var url = "Game";
+    var emess = "Unknown error";
+
+    var indexAux = $("#selOptions option:selected").index();
+    var idAux = document.getElementById("selOptions")[indexAux].id;
+
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: {nameConfig: arrayConfig[idAux][0]},
+        success: function (u) {
+
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
+}
+
+function gameEnd(scoreAct, fuelAct, vAct) {
+    var url = "Game";
+    var emess = "Unknown error";
+
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: {score: scoreAct, fuel: fuelAct, speed: vAct},
+        success: function (u) {
+
+        },
+        error: function (e) {
+            if (e["responseJSON"] === undefined)
+                showAlert(emess);
+            else
+                showAlert(e["responseJSON"]["error"]);
+        }
+    });
+
 }
 
 

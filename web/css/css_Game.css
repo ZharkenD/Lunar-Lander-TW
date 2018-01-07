@@ -296,12 +296,22 @@ option{
     background-color: #ccc;
 }
 
+#mybest{
+    display:block;
+}
+
 /* Style the tab content */
 .tabcontent {
     display: none;
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
+    background: linear-gradient(black, #00004d);
+}
+
+th,td{
+    text-align: center;
+    color:dodgerblue;
 }
 
 /*CSS desktop*/
