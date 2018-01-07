@@ -74,8 +74,8 @@ public class Login extends HttpServlet {
                         response.addCookie(createCookie("lunar", request.getParameter("username"), 86400));
                         response.addCookie(createCookie("lander", Hash.sha1(request.getParameter("password")), 86400));//One day
                     } else {
-                        response.addCookie(createCookie("lunar", request.getParameter("username"), 30));
-                        response.addCookie(createCookie("lander", Hash.sha1(request.getParameter("password")), 30));
+                        response.addCookie(createCookie("lunar", request.getParameter("username"), 28800));
+                        response.addCookie(createCookie("lander", Hash.sha1(request.getParameter("password")), 28800));
                     }
                 } else {
                     Map<String, String> emess = new HashMap<>();

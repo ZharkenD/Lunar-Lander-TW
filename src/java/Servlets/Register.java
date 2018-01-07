@@ -1,6 +1,8 @@
 package Servlets;
 
 import Model.Hash;
+import PersistenceDB.Configurations;
+import PersistenceDB.ConfigurationsJpaController;
 import PersistenceDB.Users;
 import PersistenceDB.UsersJpaController;
 import com.google.gson.Gson;
@@ -25,7 +27,7 @@ public class Register extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-  @Override
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -41,6 +43,7 @@ public class Register extends HttpServlet {
                     user.setPassword(Hash.sha1(request.getParameter("password")));
                     user.setEmail(request.getParameter("email"));
                     ujc.create(user);
+                    createConf(user);
                     Map<String, String> mess = new HashMap<>();
                     mess.put("mess", "User created successfully.");
                     Gson gson = new GsonBuilder().create();
@@ -75,5 +78,19 @@ public class Register extends HttpServlet {
             PrintWriter pw = response.getWriter();
             pw.println(gs.toJson(emess));
         }
+    }
+
+    private void createConf(Users user) {
+        EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
+        ConfigurationsJpaController cjc = new ConfigurationsJpaController(emf);
+        Configurations conf = new Configurations();
+
+        conf.setConfigureName("Default");
+        conf.setDiffId(0);
+        conf.setSpaceshipId(0);
+        conf.setPlanetId(0);
+        conf.setUserId(user);
+        
+        cjc.create(conf);
     }
 }
