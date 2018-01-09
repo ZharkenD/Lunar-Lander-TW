@@ -235,5 +235,4 @@ public class UsersJpaController implements Serializable {
             em.close();
         }
     }
-
 }

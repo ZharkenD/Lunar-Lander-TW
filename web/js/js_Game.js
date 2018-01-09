@@ -533,8 +533,10 @@ function loadConfig() {
 function checkConfigName(txt) {
     if ($("#configName").val().length <= 0) {
         showAlert("Please, enter a name for the configuration");
+        console.log("zzzzzz")
         return false;
     }
+    console.log("wawaw")
     for (var i = 0; i < arrayConfig.length; i++) {
         if (!(arrayConfig[i][0] === txt)) {
             if ($("#configName").val() === arrayConfig[i][0]) {
@@ -543,6 +545,7 @@ function checkConfigName(txt) {
             }
         }
     }
+    console.log("XXX")
     return true;
 }
 

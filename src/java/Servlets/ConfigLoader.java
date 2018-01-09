@@ -8,11 +8,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -66,7 +63,7 @@ public class ConfigLoader extends HttpServlet {
             UsersJpaController ufc = new UsersJpaController(emf);
             Users user = ufc.findUser(getUserFromCookie(request));
             ConfigurationsJpaController cjc = new ConfigurationsJpaController(emf);
-
+//If dont exist configuration
             Configurations config = new Configurations();
 
             config.setConfigureName(request.getParameter("nameConfig"));
@@ -80,7 +77,6 @@ public class ConfigLoader extends HttpServlet {
             Map<String, String> emess = new HashMap<>();
             emess.put("mess", "The configuration has been saved successfully");
             Gson gson = new GsonBuilder().create();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.setContentType("application/json");
             PrintWriter pw = response.getWriter();
             pw.println(gson.toJson(emess));

@@ -5,6 +5,9 @@
     <class>PersistenceDB.Scores</class>
     <class>PersistenceDB.Configurations</class>
     <class>PersistenceDB.Users</class>
+    <class>Listeners.Users</class>
+    <class>Listeners.Configurations</class>
+    <class>Listeners.Scores</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/lunarlander"/>

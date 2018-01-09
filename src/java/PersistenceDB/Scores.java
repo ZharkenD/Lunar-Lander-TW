@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Scores.findById", query = "SELECT s FROM Scores s WHERE s.id = :id")
     , @NamedQuery(name = "Scores.findBySpeed", query = "SELECT s FROM Scores s WHERE s.speed = :speed")
     , @NamedQuery(name = "Scores.findByFuel", query = "SELECT s FROM Scores s WHERE s.fuel = :fuel")
+    , @NamedQuery(name = "Scores.findByScore", query = "SELECT s FROM Scores s WHERE s.score = :score")
     , @NamedQuery(name = "Scores.findByInitTime", query = "SELECT s FROM Scores s WHERE s.initTime = :initTime")
     , @NamedQuery(name = "Scores.findByEndTime", query = "SELECT s FROM Scores s WHERE s.endTime = :endTime")})
 public class Scores implements Serializable {
@@ -50,6 +51,8 @@ public class Scores implements Serializable {
     private Float speed;
     @Column(name = "fuel")
     private Float fuel;
+    @Column(name = "score")
+    private Float score;
     @Column(name = "init_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date initTime;
@@ -89,6 +92,14 @@ public class Scores implements Serializable {
 
     public void setFuel(Float fuel) {
         this.fuel = fuel;
+    }
+
+    public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
     }
 
     public Date getInitTime() {

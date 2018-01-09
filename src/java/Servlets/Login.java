@@ -122,9 +122,11 @@ public class Login extends HttpServlet {
             //Check if the cookie has the correct combination user & password
             if (username != null && password != null) {
                 Users user = ufc.findUser(username);
-                if (user.getPassword().equals(password)) {
-                    return true; // ====================================================================================>
-                }
+                if (user != null) {
+                    if (user.getPassword().equals(password)) {
+                        return true; // ====================================================================================>
+                    }
+                } 
             }
         }
         return false;
