@@ -395,12 +395,19 @@ th,td{
     button[disabled]>.glyphicon{
         color:royalblue;
     }
-    #endPanel{
+    .panel-modal{
     margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    height:100%;
+    }
+    .panel-body{
+        height:calc(100% - 141px);
+    }
+    #endPanel{
+        height:auto;
     }
 
 }
