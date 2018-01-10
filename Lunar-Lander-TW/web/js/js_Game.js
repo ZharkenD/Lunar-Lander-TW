@@ -204,7 +204,7 @@ $(document).ready(function () {
 
     /*OPTIONS EVENTS*/
     $("#chooseOption").click(function () {
-        cargarConfig();
+        loadConfig();
         restart();
         motorOff();
         hideAll();
@@ -338,10 +338,10 @@ $(document).ready(function () {
     $("#playEnd").click(function () {
         $("#endPanel").hide();
         restart();
-        endGame=false;
+        endGame = false;
         motorOff;
     });
-    
+
     $("#optionPanel").show();
     loadUserConfig();
 
@@ -352,7 +352,7 @@ $(document).ready(function () {
 //Definición de funciones
 function start() {
     isPause = false;
-    endGame=false;
+    endGame = false;
     timer = setInterval(function () {
         moverNave();
     }, dt * 1000);
@@ -507,7 +507,7 @@ function restart() {
 
 function restartConfig() {
     y = yStart;
-    fuel = fuelStart;
+    actualFuel = fuelStart;
     v = 0;
     isFuel = true;
     endGame = false;
@@ -517,7 +517,7 @@ function restartConfig() {
     timerFuel = null;
 
     combustible.css("color", "lime");
-    combustible.text(fuel.toFixed());
+    combustible.text(actualFuel.toFixed());
     document.getElementById("naveimg").src = "img/" + shipImg + ".png";
 }
 
@@ -631,14 +631,14 @@ function markLand(txt) {
 
 /*POST AL SERVLET*/
 function loadUserConfig() {
-    var url = "ConfigsUser";
+    var url = "ConfigLoader";
     var emess = "Unknown error";
 
     $.ajax({
         url: url,
         dataType: 'json',
         success: function (jsn) {
-            $.each(jsn.config, function (i) {
+            $.each(jsn, function () {
 
                 var nameAux = this.configureName;
                 var difiAux = this.diffId;
@@ -650,9 +650,8 @@ function loadUserConfig() {
                 var anotherShip = (shAux === 0) ? "Spaceship" : "UFO";
                 var anotherLand = (lanAux === 0) ? "Moon" : "Mars";
 
-
-                $("#selOpciones").append("<option id=" + indexConfig + ">" + nameAux + " (" + anotherDif +
-                        ", " + anotherLand + ", " + lanAux + ")</option>");
+                $("#selOptions").append("<option id=" + indexConfig + ">" + nameAux + " (" + anotherDif +
+                        ", " + anotherShip + ", " + anotherLand + ")</option>");
 
                 indexConfig++;
 
@@ -669,9 +668,9 @@ function loadUserConfig() {
 
 function saveConfig() {
     if (checkConfigName("")) {
-        var name = $("#nameConfig").val();
+        var name = $("#configName").val();
 
-        var url = "ConfigsUser";
+        var url = "ConfigLoader";
         var emess = "Unknown error";
 
         $.ajax({
@@ -784,7 +783,7 @@ function loadUsersOnline() {
         success: function (jsn) {
             $("#list-g-users").text("");
 
-            $.each(jsn.config, function (i) {
+            $.each(jsn, function () {
                 var nameAux = this.username;
                 $("#list-g-users").append("<li class=\"list-group-item list-users\">" + nameAux + "</li>");
 
@@ -803,19 +802,17 @@ function loadMyBest() {
     var url = "UsersOnline";
     var emess = "Unknown error";
 
-
     $.ajax({
         url: url,
         dataType: 'json',
         success: function (jsn) {
-            var nameAux = this.configureName;
-            var difiAux = this.diffId;
-            var scorAux = this.score;
-            var anotherDif = (difAux === 0) ? "Easy" : (difiAux === 1) ? "Medium" : "Hard";
-
             $("#mybestbody").text("");
 
-            $.each(jsn.config, function (i) {
+            $.each(jsn, function () {
+                var nameAux = this.configureName;
+                var difiAux = this.diffId;
+                var scorAux = this.score;
+                var anotherDif = (difAux === 0) ? "Easy" : (difiAux === 1) ? "Medium" : "Hard";
 
                 $("#mybestbody").append("<tr><td>" + nameAux + "</td><td>" + anotherDif + "</td><td>" + scorAux + "</td></tr>");
 
@@ -839,15 +836,16 @@ function loadWorldBest() {
         url: url,
         dataType: 'json',
         success: function (jsn) {
-            var nameAux = this.username;
-            var difiAux = this.diffId;
-            var scorAux = this.score;
-            var anotherDif = (difAux === 0) ? "Easy" : (difiAux === 1) ? "Medium" : "Hard";
 
-            $("#mybestbody").text("");
 
-            $.each(jsn.config, function (i) {
-                $("#mybestbody").append("<tr><td>" + nameAux + "</td><td>" + anotherDif + "</td><td>" + scorAux + "</td></tr>");
+            $("#worldbestbody").text("");
+
+            $.each(jsn, function () {
+                var nameAux = this.username;
+                var difiAux = this.diffId;
+                var scorAux = this.score;
+                var anotherDif = (difAux === 0) ? "Easy" : (difiAux === 1) ? "Medium" : "Hard";
+                $("#worldbestbody").append("<tr><td>" + nameAux + "</td><td>" + anotherDif + "</td><td>" + scorAux + "</td></tr>");
             });
         },
         error: function (e) {
@@ -867,14 +865,13 @@ function loadTopTen() {
         url: url,
         dataType: 'json',
         success: function (jsn) {
-            var nameAux = this.username;
-            var gamesAux = this.numGames;
+            $("#toptenbody").text("");
 
+            $.each(jsn, function (i) {
+                var nameAux = this.username;
+                var gamesAux = this.numGames;
 
-            $("#mybestbody").text("");
-
-            $.each(jsn.config, function (i) {
-                $("#mybestbody").append("<tr><td>" + nameAux + "</td><td>" + gamesAux + "</td></tr>");
+                $("#toptenbody").append("<tr><td>" + nameAux + "</td><td>" + gamesAux + "</td></tr>");
             });
         },
         error: function (e) {
